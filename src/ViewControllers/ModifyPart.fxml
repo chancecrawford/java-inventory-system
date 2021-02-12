@@ -24,7 +24,7 @@
             <children>
                 <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="470.0">
                     <children>
-                        <Label style="-fx-font-weight: bold; -fx-font-size: 16px;" text="Modify Part">
+                        <Label style="-fx-font-weight: bold; -fx-font-size: 16px;" text="Modify Classes.Part">
                             <padding>
                                 <Insets right="40.0" />
                             </padding>

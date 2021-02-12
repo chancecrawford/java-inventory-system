@@ -66,7 +66,7 @@
                         <Label prefHeight="52.0" prefWidth="122.0" style="-fx-font-weight: BOLD;" text="Parts" />
                         <HBox alignment="CENTER_RIGHT" prefHeight="50.0" prefWidth="279.0">
                           <children>
-                            <TextField fx:id="MainPartSearch" alignment="CENTER" prefHeight="17.0" prefWidth="158.0" promptText="Search By Part ID or Name">
+                            <TextField fx:id="MainPartSearch" prefHeight="17.0" prefWidth="158.0" promptText="Search By Part ID or Name">
                                              <HBox.margin>
                                                 <Insets right="15.0" />
                                              </HBox.margin></TextField>
@@ -76,8 +76,8 @@
                     </HBox>
                     <TableView fx:id="MainPartTable" prefHeight="200.0" prefWidth="200.0">
                       <columns>
-                        <TableColumn fx:id="pIDColumn" prefWidth="50.0" text="Part ID" />
-                        <TableColumn fx:id="pNameColumn" prefWidth="75.0" text="Part Name" />
+                        <TableColumn fx:id="pIDColumn" prefWidth="50.0" text="Classes.Part ID" />
+                        <TableColumn fx:id="pNameColumn" prefWidth="75.0" text="Classes.Part Name" />
                         <TableColumn fx:id="pInvColumn" prefWidth="100.0" text="Inventory Level" />
                         <TableColumn fx:id="pCostColumn" prefWidth="150.0" text="Price / Cost Per Unit" />
                       </columns>

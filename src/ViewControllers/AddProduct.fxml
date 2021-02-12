@@ -140,7 +140,7 @@
                     <children>
                         <HBox alignment="BOTTOM_RIGHT" nodeOrientation="LEFT_TO_RIGHT" prefHeight="81.0" prefWidth="631.0">
                             <children>
-                                <TextField fx:id="AddProductSearch" prefHeight="21.0" prefWidth="163.0" promptText="Search By Part ID or Name">
+                                <TextField fx:id="AddProductSearch" prefHeight="21.0" prefWidth="163.0" promptText="Search By Classes.Part ID or Name">
                                     <HBox.margin>
                                         <Insets bottom="4.0" />
                                     </HBox.margin>
@@ -160,8 +160,8 @@
                             <columns>
                                 <TableColumn fx:id="addUnitPrice" prefWidth="150.0" text="Price per Unit" />
                                 <TableColumn fx:id="addInvLevel" prefWidth="154.0" text="Inventroy Level" />
-                                <TableColumn fx:id="addPartName" minWidth="0.0" prefWidth="170.0" text="Part Name" />
-                                <TableColumn fx:id="addPartID" minWidth="0.0" prefWidth="156.0" text="Part ID" />
+                                <TableColumn fx:id="addPartName" minWidth="0.0" prefWidth="170.0" text="Classes.Part Name" />
+                                <TableColumn fx:id="addPartID" minWidth="0.0" prefWidth="156.0" text="Classes.Part ID" />
                             </columns>
                         </TableView>
                         <HBox alignment="CENTER_LEFT" prefHeight="70.0" prefWidth="611.0">
@@ -183,13 +183,13 @@
                             <columns>
                                 <TableColumn fx:id="deletePricePerUnit" prefWidth="144.0" text="Price per Unit" />
                                 <TableColumn fx:id="deleteInvLevel" prefWidth="162.0" text="Inventroy Level" />
-                                <TableColumn fx:id="deletePartName" prefWidth="151.0" text="Part Name" />
-                                <TableColumn fx:id="deletePartID" prefWidth="173.0" text="Part ID" />
+                                <TableColumn fx:id="deletePartName" prefWidth="151.0" text="Classes.Part Name" />
+                                <TableColumn fx:id="deletePartID" prefWidth="173.0" text="Classes.Part ID" />
                             </columns>
                         </TableView>
                         <HBox alignment="CENTER_LEFT" prefHeight="64.0" prefWidth="616.0">
                             <children>
-                                <Button fx:id="AddProductDelete" mnemonicParsing="false" onMouseClicked="#removePart" text="Remove Associated Part">
+                                <Button fx:id="AddProductDelete" mnemonicParsing="false" onMouseClicked="#removePart" text="Remove Associated Classes.Part">
                                     <padding>
                                         <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
                                     </padding>
