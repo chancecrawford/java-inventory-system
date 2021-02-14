@@ -7,6 +7,8 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import Classes.*;
 
+import java.io.IOException;
+
 public class InventorySystem extends Application {
     Inventory inventory = new Inventory();
 
@@ -15,7 +17,7 @@ public class InventorySystem extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) throws IOException {
         createInventory(inventory);
 
         Parent root = FXMLLoader.load(getClass().getResource("/ViewControllers/MainForm.fxml"));

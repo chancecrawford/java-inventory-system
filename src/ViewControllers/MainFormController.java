@@ -1,17 +1,25 @@
 package ViewControllers;
 
+import Data.*;
 import Classes.Inventory;
 import Classes.Part;
 import Classes.Product;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+
+import java.io.IOException;
 
 public class MainFormController {
     Stage stage;
@@ -74,7 +82,64 @@ public class MainFormController {
         productNameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         productInventoryColumn.setCellValueFactory(new PropertyValueFactory<>("stock"));
         productPriceCostColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
+
+        // assigning events for scenes to relevant buttons
+        setButtonEvents();
     }
 
-
+    private void setButtonEvents() {
+        MainPartAdd.setOnAction(new EventHandler<>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                Stage newStage = new Stage();
+                newStage.setTitle(Text.addPartTitle);
+                try {
+                    newStage.setScene(new Scene(FXMLLoader.load(getClass().getResource(Paths.addPartScenePath))));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                newStage.show();
+            }
+        });
+        MainPartModify.setOnAction(new EventHandler<>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                Stage newStage = new Stage();
+                newStage.setTitle(Text.modifyPartTitle);
+                try {
+                    newStage.setScene(new Scene(FXMLLoader.load(getClass().getResource(Paths.modifyPartScenePath))));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                newStage.show();
+            }
+        });
+        MainProductAdd.setOnAction(new EventHandler<>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                Stage newStage = new Stage();
+                newStage.setTitle(Text.addProductTitle);
+                try {
+                    newStage.setScene(new Scene(FXMLLoader.load(getClass().getResource(Paths.addProductScenePath))));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                newStage.show();
+            }
+        });
+        MainProductModify.setOnAction(new EventHandler<>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                Stage newStage = new Stage();
+                newStage.setTitle(Text.modifyProductTitle);
+                try {
+                    newStage.setScene(new Scene(FXMLLoader.load(getClass().getResource(Paths.modifyProductScenePath))));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                newStage.show();
+            }
+        });
+        MainExitButton.setOnAction(event -> System.exit(0));
+    }
 }
