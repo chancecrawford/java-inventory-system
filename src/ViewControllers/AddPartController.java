@@ -4,18 +4,14 @@ import Classes.InHouse;
 import Classes.Inventory;
 import Classes.Outsourced;
 import Data.*;
-import Validations.InputValidation;
+import Utilities.*;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 public class AddPartController {
     Stage stage;
-    Parent scene;
 
     @FXML
     private RadioButton InHouseRadio;
@@ -68,23 +64,20 @@ public class AddPartController {
 
                     Inventory.addPart(new InHouse(tempPartId, tempPartName, tempPartPrice, tempPartInventory, tempPartMax, tempPartMin, tempMachineId));
 
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Part Added");
-                    alert.setHeaderText("InHouse Part Added Successfully");
-                    alert.showAndWait();
+                    Alerts.GenerateAlert("INFORMATION", "Part Added", "InHouse Part Added Successfully", "", "Show");
                 }
                 if (OutsourcedRadio.isSelected()) {
                     String tempCompanyName = AddPartUniqueAttribute.getText();
 
                     Inventory.addPart(new Outsourced(tempPartId, tempPartName, tempPartPrice, tempPartInventory, tempPartMax, tempPartMin, tempCompanyName));
 
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Part Added");
-                    alert.setHeaderText("Outsourced Part Added Successfully");
-                    alert.showAndWait();
+                    Alerts.GenerateAlert("INFORMATION", "Part Added", "Outsourced Part Added Successfully", "", "Show");
                 }
             }
-
+        });
+        AddPartCancel.setOnAction(actionEvent -> {
+            stage = (Stage) AddPartCancel.getScene().getWindow();
+            stage.close();
         });
     }
 
@@ -118,12 +111,7 @@ public class AddPartController {
         }
 
         if (inputErrors.length() > 0 || !inputErrors.toString().equals("")) {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Warning");
-            alert.setHeaderText("Required Fields Empty or Invalid");
-            alert.setContentText(inputErrors.toString());
-
-            alert.showAndWait();
+            Alerts.GenerateAlert("WARNING", "Part Entry Warning", "Required Fields Empty or Invalid", inputErrors.toString(), "ShowAndWait");
             return false;
         }
         return true;
