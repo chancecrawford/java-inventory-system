@@ -26,15 +26,15 @@
                     <Insets right="40.0" />
                 </padding>
             </Label>
-            <RadioButton fx:id="InHouseRadio" mnemonicParsing="false" selected="true" style="-fx-font-weight: bold;" text="In-House">
+            <RadioButton fx:id="InHouseRadio" selected="true" mnemonicParsing="false" style="-fx-font-weight: bold;" text="In-House">
                 <padding>
                     <Insets right="40.0" />
                 </padding>
-                <toggleGroup>
-                    <ToggleGroup />
-                </toggleGroup>
+            <toggleGroup>
+               <ToggleGroup fx:id="PartTypeGroup" />
+            </toggleGroup>
             </RadioButton>
-            <RadioButton fx:id="OutsourcedRadio" mnemonicParsing="false" style="-fx-font-weight: bold;" text="Outsourced" />
+            <RadioButton fx:id="OutsourcedRadio" mnemonicParsing="false" style="-fx-font-weight: bold;" text="Outsourced" toggleGroup="$PartTypeGroup" />
         </HBox>
         <GridPane alignment="CENTER_LEFT" minHeight="-Infinity" minWidth="-Infinity" nodeOrientation="LEFT_TO_RIGHT" prefHeight="225.0" prefWidth="400.0">
             <columnConstraints>
@@ -93,12 +93,12 @@
                 </Label>
                 <TextField fx:id="AddPartMax" prefHeight="10.0" GridPane.columnIndex="1" />
             </GridPane>
-            <TextField fx:id="AddPartID" editable="false" prefHeight="10.0" promptText="Auto Gen- Disabled" GridPane.columnIndex="1" />
+            <TextField fx:id="AddPartID" disable="true" editable="false" prefHeight="10.0" promptText="Auto Gen- Disabled" GridPane.columnIndex="1" />
             <TextField fx:id="AddPartName" prefHeight="10.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <TextField fx:id="AddPartInventory" prefHeight="10.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             <TextField fx:id="AddPartPriceCost" prefHeight="10.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
             <TextField fx:id="AddPartUniqueAttribute" prefHeight="10.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-            <Label fx:id="AddPartUniqueLabel" style="-fx-font-weight: bold;" GridPane.rowIndex="5">
+            <Label fx:id="AddPartUniqueLabel" style="-fx-font-weight: bold;" text="Machine ID" GridPane.rowIndex="5">
                 <font>
                     <Font size="14.0" />
                 </font>

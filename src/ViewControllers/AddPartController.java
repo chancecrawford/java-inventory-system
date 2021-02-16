@@ -9,6 +9,7 @@ import Utilities.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 public class AddPartController {
     Stage stage;
@@ -17,8 +18,6 @@ public class AddPartController {
     private RadioButton InHouseRadio;
     @FXML
     private RadioButton OutsourcedRadio;
-    @FXML
-    private TextField AddPartID;
     @FXML
     private TextField AddPartName;
     @FXML
@@ -43,7 +42,7 @@ public class AddPartController {
         // set button events
         setAddPartButtonEvents();
         // set listener for InHouse/Outsourced selection
-
+        setPartTypeListener();
     }
 
     private void setAddPartButtonEvents() {
@@ -65,6 +64,7 @@ public class AddPartController {
                     Inventory.addPart(new InHouse(tempPartId, tempPartName, tempPartPrice, tempPartInventory, tempPartMax, tempPartMin, tempMachineId));
 
                     Alerts.GenerateAlert("INFORMATION", "Part Added", "InHouse Part Added Successfully", "", "Show");
+
                 }
                 if (OutsourcedRadio.isSelected()) {
                     String tempCompanyName = AddPartUniqueAttribute.getText();
@@ -73,41 +73,66 @@ public class AddPartController {
 
                     Alerts.GenerateAlert("INFORMATION", "Part Added", "Outsourced Part Added Successfully", "", "Show");
                 }
+                clearAllFields();
             }
         });
         AddPartCancel.setOnAction(actionEvent -> {
             stage = (Stage) AddPartCancel.getScene().getWindow();
+            // firing event for main parts table to update with new parts added
+            stage.fireEvent(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
             stage.close();
         });
+    }
+
+    @FXML
+    private void setPartTypeListener() {
+        InHouseRadio.setOnAction(actionEvent -> AddPartUniqueLabel.setText(Text.addPartMachineIDLabel));
+        OutsourcedRadio.setOnAction(actionEvent -> AddPartUniqueLabel.setText(Text.addPartCompanyNameLabel));
     }
 
     private boolean validateInput() {
         StringBuilder inputErrors = new StringBuilder();
 
-        if (!InputValidation.checkInputField(AddPartName.getText().trim())) {
+        if (InputValidation.checkInputField(AddPartName.getText().trim())) {
             inputErrors.append(Text.addPartNameError).append("\n");
         }
-        if (!InputValidation.checkInputField(AddPartInventory.getText().trim()) || !InputValidation.isInteger(AddPartInventory.getText().trim()) ) {
-            inputErrors.append(Text.addPartInventoryError).append("\n");
+        if (InputValidation.checkInputField(AddPartInventory.getText().trim()) || !InputValidation.isInteger(AddPartInventory.getText().trim()) ) {
+                inputErrors.append(Text.addPartInventoryError).append("\n");
         }
-        if (!InputValidation.checkInputField(AddPartPriceCost.getText()) || !InputValidation.isDouble(AddPartPriceCost.getText())) {
-            inputErrors.append(Text.addPartPriceCostError).append("\n");
+        if (!AddPartInventory.getText().isEmpty() && !AddPartMax.getText().isEmpty() && !AddPartMin.getText().isEmpty()) {
+            if (Integer.parseInt(AddPartInventory.getText().trim()) > Integer.parseInt(AddPartMax.getText().trim())
+                    || Integer.parseInt(AddPartInventory.getText().trim()) < Integer.parseInt(AddPartMin.getText().trim())) {
+                inputErrors.append(Text.addPartInventoryAmountError).append("\n");
+            }
         }
-        if (!InputValidation.checkInputField(AddPartMax.getText().trim()) || !InputValidation.isInteger(AddPartMax.getText().trim())) {
+        if (InputValidation.checkInputField(AddPartPriceCost.getText()) || !InputValidation.isDouble(AddPartPriceCost.getText())) {
+                inputErrors.append(Text.addPartPriceCostError).append("\n");
+        }
+
+        if (InputValidation.checkInputField(AddPartMax.getText().trim()) || !InputValidation.isInteger(AddPartMax.getText().trim())) {
             inputErrors.append(Text.addPartMaxError).append("\n");
         }
-        if (!InputValidation.checkInputField(AddPartMin.getText().trim()) || !InputValidation.isInteger(AddPartMin.getText().trim())) {
+        if (InputValidation.checkInputField(AddPartMin.getText().trim()) || !InputValidation.isInteger(AddPartMin.getText().trim())) {
             inputErrors.append(Text.addPartMinError).append("\n");
         }
+        if (!AddPartMin.getText().isEmpty()) {
+            if (Integer.parseInt(AddPartMin.getText()) < 0) {
+                inputErrors.append(Text.addPartMinAmountError).append("\n");
+            }
+        }
         if (InHouseRadio.isSelected()) {
-            if (!InputValidation.checkInputField(AddPartUniqueAttribute.getText().trim()) || !InputValidation.isInteger(AddPartUniqueAttribute.getText().trim())) {
+            if (InputValidation.checkInputField(AddPartUniqueAttribute.getText().trim()) || !InputValidation.isInteger(AddPartUniqueAttribute.getText().trim())) {
                 inputErrors.append(Text.addPartMachineIdError);
             }
         }
         if (OutsourcedRadio.isSelected()) {
-            if (!InputValidation.checkInputField(AddPartUniqueAttribute.getText().trim())) {
+            if (InputValidation.checkInputField(AddPartUniqueAttribute.getText().trim())) {
                 inputErrors.append(Text.addPartCompanyNameError);
             }
+        }
+        if (!InHouseRadio.isSelected() && !OutsourcedRadio.isSelected()) {
+            inputErrors.delete(0, inputErrors.length());
+            inputErrors.append(Text.addPartPartTypeSelectionError);
         }
 
         if (inputErrors.length() > 0 || !inputErrors.toString().equals("")) {
@@ -115,5 +140,14 @@ public class AddPartController {
             return false;
         }
         return true;
+    }
+
+    private void clearAllFields() {
+        AddPartName.clear();
+        AddPartInventory.clear();
+        AddPartPriceCost.clear();
+        AddPartMax.clear();
+        AddPartMin.clear();
+        AddPartUniqueAttribute.clear();
     }
 }

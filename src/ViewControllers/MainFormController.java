@@ -101,27 +101,29 @@ public class MainFormController {
         MainPartAdd.setOnAction(new EventHandler<>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                Stage newStage = new Stage();
-                newStage.setTitle(Text.addPartTitle);
+                Stage addPartStage = new Stage();
+                addPartStage.setTitle(Text.addPartTitle);
                 try {
-                    newStage.setScene(new Scene(FXMLLoader.load(getClass().getResource(Paths.addPartScenePath))));
+                    addPartStage.setScene(new Scene(FXMLLoader.load(getClass().getResource(Paths.addPartScenePath))));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                newStage.show();
+                addPartStage.show();
+                // need to set event for part table to update after child window closes
+                addPartStage.setOnHidden(windowEvent -> MainPartTable.setItems(Inventory.getAllParts()));
             }
         });
         MainPartModify.setOnAction(new EventHandler<>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                Stage newStage = new Stage();
-                newStage.setTitle(Text.modifyPartTitle);
+                Stage modifyPartStage = new Stage();
+                modifyPartStage.setTitle(Text.modifyPartTitle);
                 try {
-                    newStage.setScene(new Scene(FXMLLoader.load(getClass().getResource(Paths.modifyPartScenePath))));
+                    modifyPartStage.setScene(new Scene(FXMLLoader.load(getClass().getResource(Paths.modifyPartScenePath))));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                newStage.show();
+                modifyPartStage.show();
             }
         });
         MainPartDelete.setOnAction(actionEvent -> {
@@ -136,27 +138,27 @@ public class MainFormController {
         MainProductAdd.setOnAction(new EventHandler<>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                Stage newStage = new Stage();
-                newStage.setTitle(Text.addProductTitle);
+                Stage productAddStage = new Stage();
+                productAddStage.setTitle(Text.addProductTitle);
                 try {
-                    newStage.setScene(new Scene(FXMLLoader.load(getClass().getResource(Paths.addProductScenePath))));
+                    productAddStage.setScene(new Scene(FXMLLoader.load(getClass().getResource(Paths.addProductScenePath))));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                newStage.show();
+                productAddStage.show();
             }
         });
         MainProductModify.setOnAction(new EventHandler<>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                Stage newStage = new Stage();
-                newStage.setTitle(Text.modifyProductTitle);
+                Stage modifyProductStage = new Stage();
+                modifyProductStage.setTitle(Text.modifyProductTitle);
                 try {
-                    newStage.setScene(new Scene(FXMLLoader.load(getClass().getResource(Paths.modifyProductScenePath))));
+                    modifyProductStage.setScene(new Scene(FXMLLoader.load(getClass().getResource(Paths.modifyProductScenePath))));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                newStage.show();
+                modifyProductStage.show();
             }
         });
         MainProductDelete.setOnAction(actionEvent -> {
@@ -175,5 +177,4 @@ public class MainFormController {
     public void partSearchFilter() {
 
     }
-
 }

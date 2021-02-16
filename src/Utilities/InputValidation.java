@@ -3,7 +3,7 @@ package Utilities;
 public class InputValidation {
 
     public static boolean checkInputField(String userInput) {
-        return userInput != null && !userInput.trim().isEmpty();
+        return userInput == null || userInput.trim().isEmpty();
     }
 
     public static boolean isInteger(String userInput) {
