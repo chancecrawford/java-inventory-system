@@ -68,6 +68,11 @@
           <HBox prefHeight="50.0" prefWidth="400.0">
             <Label prefHeight="52.0" prefWidth="122.0" style="-fx-font-weight: BOLD;" text="Parts" />
             <HBox alignment="CENTER_RIGHT" prefHeight="50.0" prefWidth="279.0">
+                     <Button fx:id="PartSearchButton" mnemonicParsing="false" text="Search" textAlignment="CENTER">
+                        <HBox.margin>
+                           <Insets right="10.0" />
+                        </HBox.margin>
+                     </Button>
               <TextField fx:id="MainPartSearch" prefHeight="17.0" prefWidth="158.0" promptText="Search By Part ID or Name">
                 <HBox.margin>
                   <Insets right="15.0" />
@@ -101,6 +106,11 @@
           <HBox prefHeight="50.0" prefWidth="400.0">
             <Label prefHeight="52.0" prefWidth="122.0" style="-fx-font-weight: BOLD;" text="Products" />
             <HBox alignment="CENTER_RIGHT" prefHeight="50.0" prefWidth="279.0">
+                     <Button fx:id="ProductSearchButton" mnemonicParsing="false" text="Search" textAlignment="CENTER">
+                        <HBox.margin>
+                           <Insets right="10.0" />
+                        </HBox.margin>
+                     </Button>
               <TextField fx:id="MainProductSearch" prefHeight="25.0" prefWidth="175.0" promptText="Search By Product ID or Name">
                 <HBox.margin>
                   <Insets right="15.0" />

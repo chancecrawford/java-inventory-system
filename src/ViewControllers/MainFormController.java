@@ -5,28 +5,29 @@ import Classes.Inventory;
 import Classes.Part;
 import Classes.Product;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 
 public class MainFormController {
+    // don't think I need these since we're creating new ones for other windows (add/modify)
     Stage stage;
     Parent scene;
 
     // initializing FXML elements for:
     // Parts table
+    @FXML
+    private Button PartSearchButton;
     @FXML
     private TextField MainPartSearch;
     @FXML
@@ -46,6 +47,8 @@ public class MainFormController {
     @FXML
     private Button MainPartDelete;
     // Products table
+    @FXML
+    private Button ProductSearchButton;
     @FXML
     private TextField MainProductSearch;
     @FXML
@@ -84,10 +87,21 @@ public class MainFormController {
         productPriceCostColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
 
         // assigning events for scenes to relevant buttons
-        setButtonEvents();
+        setMainButtonEvents();
     }
 
-    private void setButtonEvents() {
+    private void setMainButtonEvents() {
+        PartSearchButton.setOnAction(actionEvent -> {
+
+            // maybe need an if/else for checking if search input is an int or string (id or name)
+            // isInteger --> search by part ID
+            // else search by name
+
+            ObservableList<Part> filteredList = FXCollections.observableArrayList();
+            filteredList = Inventory.lookupPart(MainPartSearch.getText());
+
+            MainPartTable.setItems(filteredList);
+        });
         MainPartAdd.setOnAction(new EventHandler<>() {
             @Override
             public void handle(ActionEvent actionEvent) {
@@ -112,6 +126,15 @@ public class MainFormController {
                     e.printStackTrace();
                 }
                 newStage.show();
+            }
+        });
+        MainPartDelete.setOnAction(actionEvent -> {
+            Part selectedPart = MainPartTable.getSelectionModel().getSelectedItem();
+            if (selectedPart != null) {
+                Inventory.deletePart(selectedPart);
+                // not sure why the table isn't refreshing automatically after a .remove
+                // is performed on the obs arr list
+                MainPartTable.setItems(Inventory.getAllParts());
             }
         });
         MainProductAdd.setOnAction(new EventHandler<>() {
@@ -140,6 +163,21 @@ public class MainFormController {
                 newStage.show();
             }
         });
+        MainProductDelete.setOnAction(actionEvent -> {
+            Product selectedProduct = MainProductTable.getSelectionModel().getSelectedItem();
+            if (selectedProduct != null) {
+                Inventory.deleteProduct(selectedProduct);
+                // table isn't refreshing automatically after a .remove here as well
+                MainProductTable.setItems(Inventory.getAllProducts());
+            }
+        });
         MainExitButton.setOnAction(event -> System.exit(0));
     }
+
+    // TODO: Figure out how to use these two stupid part/product search functions in an easy/intuitive way
+    @FXML
+    public void partSearchFilter() {
+
+    }
+
 }

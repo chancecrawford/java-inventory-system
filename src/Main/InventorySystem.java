@@ -10,7 +10,7 @@ import Classes.*;
 import java.io.IOException;
 
 public class InventorySystem extends Application {
-    Inventory inventory = new Inventory();
+//    Inventory inventory = new Inventory();
 
     public static void main(String[] args) {
         launch(args);
@@ -18,7 +18,7 @@ public class InventorySystem extends Application {
 
     @Override
     public void start(Stage primaryStage) throws IOException {
-        createInventory(inventory);
+        createInventory();
 
         Parent root = FXMLLoader.load(getClass().getResource("/ViewControllers/MainForm.fxml"));
         Scene scene = new Scene(root);
@@ -26,7 +26,7 @@ public class InventorySystem extends Application {
         primaryStage.show();
     }
 
-    void createInventory(Inventory inventory) {
+    void createInventory() {
         Inventory.addPart(new InHouse(01, "IH Part 1", 3.50, 5, 1, 10, 55));
         Inventory.addPart(new Outsourced(03, "OS Part 1", 4.50, 3, 1, 20, "Streisshand"));
 

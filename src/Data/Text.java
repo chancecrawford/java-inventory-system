@@ -10,4 +10,12 @@ public class Text {
     public static String modifyProductTitle = "Modify Product";
     // part variables
 
+    // error messages
+    public static String addPartNameError = "Entry for part name is missing or invalid";
+    public static String addPartInventoryError = "Entry for part inventory is missing or invalid";
+    public static String addPartPriceCostError = "Entry for part price/cost is missing or invalid";
+    public static String addPartMaxError = "Entry for part maximum is missing or invalid";
+    public static String addPartMinError = "Entry for part minimum is missing or invalid";
+    public static String addPartMachineIdError = "Entry for part machine ID is missing or invalid";
+    public static String addPartCompanyNameError = "Entry for part company name is missing or invalid";
 }

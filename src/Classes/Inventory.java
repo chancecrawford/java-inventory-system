@@ -22,9 +22,9 @@ public class Inventory {
 
     public static Part lookupPart(int partId) {
         if(!allParts.isEmpty()) {
-            for(int i = 0; i < allParts.size(); i++) {
-                if(allParts.get(i).getId() == partId) {
-                    return allParts.get(i);
+            for (Part allPart : allParts) {
+                if (allPart.getId() == partId) {
+                    return allPart;
                 }
             }
         }
@@ -35,9 +35,9 @@ public class Inventory {
 
     public static Product lookupProduct(int productId) {
         if(!allProducts.isEmpty()) {
-            for(int i = 0; i < allProducts.size(); i++) {
-                if(allProducts.get(i).getId() == productId) {
-                    return allProducts.get(i);
+            for (Product allProduct : allProducts) {
+                if (allProduct.getId() == productId) {
+                    return allProduct;
                 }
             }
         }
@@ -50,9 +50,9 @@ public class Inventory {
         ObservableList<Part> searchResult = FXCollections.observableArrayList();
 
         if (!allParts.isEmpty()) {
-            for (int i = 0; i < allParts.size(); i++) {
-                if (allParts.get(i).getName().contains(partName)) {
-                    searchResult.add(allParts.get(i));
+            for (Part allPart : allParts) {
+                if (allPart.getName().contains(partName)) {
+                    searchResult.add(allPart);
                 }
             }
         return searchResult;
