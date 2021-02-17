@@ -7,13 +7,20 @@ import Data.*;
 import Utilities.*;
 
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class AddPartController {
     Stage stage;
 
+    @FXML
+    private AnchorPane AddPartAnchorPane;
     @FXML
     private RadioButton InHouseRadio;
     @FXML
@@ -37,6 +44,9 @@ public class AddPartController {
     @FXML
     private Button AddPartCancel;
 
+    // declaring part type to change based on radio button selection
+    private String tempPartType;
+
     @FXML
     private void initialize() {
         // set button events
@@ -47,34 +57,38 @@ public class AddPartController {
 
     private void setAddPartButtonEvents() {
         AddPartSave.setOnAction(actionEvent -> {
-            if (validateInput()) {
-                // declare/set part input values
-                int tempPartId = (int) (Math.random() * (9999 - 1 + 1) + 1);
-                String tempPartName = AddPartName.getText();
-                int tempPartInventory = Integer.parseInt(AddPartInventory.getText().trim());
-                double tempPartPrice = Double.parseDouble(AddPartPriceCost.getText());
-                int tempPartMax = Integer.parseInt(AddPartMax.getText().trim());
-                int tempPartMin = Integer.parseInt(AddPartMin.getText().trim());
+            // set part input values
+            int tempPartId = (int) (Math.random() * (9999 - 1 + 1) + 1);
+            String tempPartName = AddPartName.getText();
+            int tempPartInventory = Integer.parseInt(AddPartInventory.getText().trim());
+            double tempPartPrice = Double.parseDouble(AddPartPriceCost.getText());
+            int tempPartMax = Integer.parseInt(AddPartMax.getText().trim());
+            int tempPartMin = Integer.parseInt(AddPartMin.getText().trim());
+            String tempUniqueAttribute = AddPartUniqueAttribute.getText().trim();
 
-                // assign correct variables after check on selected radio button
-                // then add part type to inventory
-                if (InHouseRadio.isSelected()) {
-                    int tempMachineId = Integer.parseInt(AddPartUniqueAttribute.getText().trim());
-
-                    Inventory.addPart(new InHouse(tempPartId, tempPartName, tempPartPrice, tempPartInventory, tempPartMax, tempPartMin, tempMachineId));
-
-                    Alerts.GenerateAlert("INFORMATION", "Part Added", "InHouse Part Added Successfully", "", "Show");
-
-                }
-                if (OutsourcedRadio.isSelected()) {
-                    String tempCompanyName = AddPartUniqueAttribute.getText();
-
-                    Inventory.addPart(new Outsourced(tempPartId, tempPartName, tempPartPrice, tempPartInventory, tempPartMax, tempPartMin, tempCompanyName));
-
-                    Alerts.GenerateAlert("INFORMATION", "Part Added", "Outsourced Part Added Successfully", "", "Show");
-                }
-                clearAllFields();
+            if (InHouseRadio.isSelected()) {
+                tempPartType = "InHouse";
             }
+            if (OutsourcedRadio.isSelected()) {
+                tempPartType = "Outsourced";
+            }
+            if (!InHouseRadio.isSelected() && !OutsourcedRadio.isSelected()) {
+                tempPartType = "";
+            }
+            // validate inputs before saving part
+            if (InputValidation.validatePartInputs(tempPartName, tempPartInventory, tempPartPrice, tempPartMax, tempPartMin, tempUniqueAttribute, tempPartType)) {
+                switch (tempPartType) {
+                    case "InHouse":
+                        Inventory.addPart(new InHouse(tempPartId, tempPartName, tempPartPrice, tempPartInventory, tempPartMax, tempPartMin, Integer.parseInt(tempUniqueAttribute)));
+                        Alerts.GenerateAlert("INFORMATION", "Part Added", "InHouse Part Added Successfully", "", "Show");
+                        break;
+                    case "Outsourced":
+                        Inventory.addPart(new Outsourced(tempPartId, tempPartName, tempPartPrice, tempPartInventory, tempPartMax, tempPartMin, tempUniqueAttribute));
+                        Alerts.GenerateAlert("INFORMATION", "Part Added", "Outsourced Part Added Successfully", "", "Show");
+                        break;
+                }
+            }
+            clearAllFields();
         });
         AddPartCancel.setOnAction(actionEvent -> {
             stage = (Stage) AddPartCancel.getScene().getWindow();
@@ -88,58 +102,6 @@ public class AddPartController {
     private void setPartTypeListener() {
         InHouseRadio.setOnAction(actionEvent -> AddPartUniqueLabel.setText(Text.addPartMachineIDLabel));
         OutsourcedRadio.setOnAction(actionEvent -> AddPartUniqueLabel.setText(Text.addPartCompanyNameLabel));
-    }
-
-    private boolean validateInput() {
-        StringBuilder inputErrors = new StringBuilder();
-
-        if (InputValidation.checkInputField(AddPartName.getText().trim())) {
-            inputErrors.append(Text.addPartNameError).append("\n");
-        }
-        if (InputValidation.checkInputField(AddPartInventory.getText().trim()) || !InputValidation.isInteger(AddPartInventory.getText().trim()) ) {
-                inputErrors.append(Text.addPartInventoryError).append("\n");
-        }
-        if (!AddPartInventory.getText().isEmpty() && !AddPartMax.getText().isEmpty() && !AddPartMin.getText().isEmpty()) {
-            if (Integer.parseInt(AddPartInventory.getText().trim()) > Integer.parseInt(AddPartMax.getText().trim())
-                    || Integer.parseInt(AddPartInventory.getText().trim()) < Integer.parseInt(AddPartMin.getText().trim())) {
-                inputErrors.append(Text.addPartInventoryAmountError).append("\n");
-            }
-        }
-        if (InputValidation.checkInputField(AddPartPriceCost.getText()) || !InputValidation.isDouble(AddPartPriceCost.getText())) {
-                inputErrors.append(Text.addPartPriceCostError).append("\n");
-        }
-
-        if (InputValidation.checkInputField(AddPartMax.getText().trim()) || !InputValidation.isInteger(AddPartMax.getText().trim())) {
-            inputErrors.append(Text.addPartMaxError).append("\n");
-        }
-        if (InputValidation.checkInputField(AddPartMin.getText().trim()) || !InputValidation.isInteger(AddPartMin.getText().trim())) {
-            inputErrors.append(Text.addPartMinError).append("\n");
-        }
-        if (!AddPartMin.getText().isEmpty()) {
-            if (Integer.parseInt(AddPartMin.getText()) < 0) {
-                inputErrors.append(Text.addPartMinAmountError).append("\n");
-            }
-        }
-        if (InHouseRadio.isSelected()) {
-            if (InputValidation.checkInputField(AddPartUniqueAttribute.getText().trim()) || !InputValidation.isInteger(AddPartUniqueAttribute.getText().trim())) {
-                inputErrors.append(Text.addPartMachineIdError);
-            }
-        }
-        if (OutsourcedRadio.isSelected()) {
-            if (InputValidation.checkInputField(AddPartUniqueAttribute.getText().trim())) {
-                inputErrors.append(Text.addPartCompanyNameError);
-            }
-        }
-        if (!InHouseRadio.isSelected() && !OutsourcedRadio.isSelected()) {
-            inputErrors.delete(0, inputErrors.length());
-            inputErrors.append(Text.addPartPartTypeSelectionError);
-        }
-
-        if (inputErrors.length() > 0 || !inputErrors.toString().equals("")) {
-            Alerts.GenerateAlert("WARNING", "Part Entry Warning", "Required Fields Empty or Invalid", inputErrors.toString(), "ShowAndWait");
-            return false;
-        }
-        return true;
     }
 
     private void clearAllFields() {

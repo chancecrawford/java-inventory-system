@@ -5,6 +5,7 @@ import Classes.Inventory;
 import Classes.Part;
 import Classes.Product;
 
+import Utilities.Alerts;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -66,6 +67,12 @@ public class MainFormController {
     @FXML
     private Button MainExitButton;
 
+    // selections and there indexes for use in modifying them later
+    public static Part selectedPart;
+    public static int selectedPartIndex;
+    public static Product selectedProduct;
+    public static int selectedProductIndex;
+
     @FXML
     private void initialize() {
         // populate parts table with data from Inventory System
@@ -116,14 +123,22 @@ public class MainFormController {
         MainPartModify.setOnAction(new EventHandler<>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                Stage modifyPartStage = new Stage();
-                modifyPartStage.setTitle(Text.modifyPartTitle);
-                try {
-                    modifyPartStage.setScene(new Scene(FXMLLoader.load(getClass().getResource(Paths.modifyPartScenePath))));
-                } catch (IOException e) {
-                    e.printStackTrace();
+                if (MainPartTable.getSelectionModel().getSelectedItem() != null) {
+                    selectedPart = MainPartTable.getSelectionModel().getSelectedItem();
+                    selectedPartIndex = Inventory.getAllParts().indexOf(selectedPart);
+
+                    Stage modifyPartStage = new Stage();
+                    modifyPartStage.setTitle(Text.modifyPartTitle);
+                    try {
+                        modifyPartStage.setScene(new Scene(FXMLLoader.load(getClass().getResource(Paths.modifyPartScenePath))));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    modifyPartStage.show();
+                    modifyPartStage.setOnHidden(windowEvent -> MainPartTable.setItems(Inventory.getAllParts()));
+                } else {
+                    Alerts.GenerateAlert("WARNING", "Modify Part Error", "You Must Select A Part To Modify", "", "Show");
                 }
-                modifyPartStage.show();
             }
         });
         MainPartDelete.setOnAction(actionEvent -> {

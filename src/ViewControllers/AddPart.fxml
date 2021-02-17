@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" minHeight="-Infinity" minWidth="-Infinity" prefHeight="318.0" prefWidth="425.0" style="-fx-background-color: F6F6F6;" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="ViewControllers.AddPartController">
+<AnchorPane id="AnchorPane" fx:id="AddPartAnchorPane" minHeight="-Infinity" minWidth="-Infinity" prefHeight="318.0" prefWidth="425.0" style="-fx-background-color: F6F6F6;" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="ViewControllers.AddPartController">
     <VBox alignment="CENTER" nodeOrientation="LEFT_TO_RIGHT" prefHeight="319.0" prefWidth="430.0">
         <padding>
             <Insets bottom="10.0" left="15.0" right="15.0" top="10.0" />
@@ -26,7 +26,7 @@
                     <Insets right="40.0" />
                 </padding>
             </Label>
-            <RadioButton fx:id="InHouseRadio" selected="true" mnemonicParsing="false" style="-fx-font-weight: bold;" text="In-House">
+            <RadioButton fx:id="InHouseRadio" mnemonicParsing="false" selected="true" style="-fx-font-weight: bold;" text="In-House">
                 <padding>
                     <Insets right="40.0" />
                 </padding>
@@ -105,9 +105,9 @@
                 <opaqueInsets>
                     <Insets />
                 </opaqueInsets>
-                <padding>
-                    <Insets left="5.0" />
-                </padding>
+            <padding>
+               <Insets left="20.0" />
+            </padding>
             </Label>
             <GridPane GridPane.columnIndex="1" GridPane.rowIndex="4">
                 <columnConstraints>
@@ -124,7 +124,10 @@
                 </Label>
                 <TextField fx:id="AddPartMin" prefHeight="10.0" GridPane.columnIndex="1" />
             </GridPane>
-         <Label alignment="CENTER" layoutX="10.0" layoutY="40.0" prefHeight="17.0" prefWidth="142.0" style="-fx-font-weight: bold;" textAlignment="CENTER" GridPane.rowIndex="5" />
+         <Label alignment="CENTER" layoutX="10.0" layoutY="40.0" style="-fx-font-weight: bold;" textAlignment="CENTER" GridPane.rowIndex="5">
+            <GridPane.margin>
+               <Insets left="20.0" />
+            </GridPane.margin></Label>
         </GridPane>
         <ButtonBar prefHeight="40.0" prefWidth="200.0">
             <buttons>
