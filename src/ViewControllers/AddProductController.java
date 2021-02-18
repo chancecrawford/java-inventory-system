@@ -90,7 +90,9 @@ public class AddProductController {
         AddProductSearch.setOnAction(actionEvent -> {
 
         });
-        AddPendingPart.setOnAction(actionEvent -> tempPartsToAdd.add(AddProductPartsTable.getSelectionModel().getSelectedItem()));
+        AddPendingPart.setOnAction(actionEvent -> {
+            tempPartsToAdd.add(AddProductPartsTable.getSelectionModel().getSelectedItem());
+        });
         AddProductDelete.setOnAction(actionEvent -> {
             if (AddPendingPartTable.getSelectionModel().getSelectedItem() != null) {
                 tempPartsToAdd.remove(AddPendingPartTable.getSelectionModel().getSelectedItem());
@@ -107,14 +109,17 @@ public class AddProductController {
                     AddProductMin.getText().trim(),
                     AddPendingPartTable.getItems()
             )) {
-                Inventory.addProduct(new Product(
+                Product tempProduct = new Product(
                         tempProductId,
                         AddProductName.getText(),
                         Double.parseDouble(AddProductPriceCost.getText()),
                         Integer.parseInt(AddProductInventory.getText()),
                         Integer.parseInt(AddProductMin.getText()),
                         Integer.parseInt(AddProductMax.getText())
-                ));
+                );
+                tempPartsToAdd.forEach(tempProduct::addAssociatedPart);
+                Inventory.addProduct(tempProduct);
+
                 Alerts.GenerateAlert("INFORMATION", "Product Added", "Product Added Successfully", "", "Show");
                 closeWindow();
             }

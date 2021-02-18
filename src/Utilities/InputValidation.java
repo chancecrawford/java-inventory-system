@@ -95,7 +95,7 @@ public class InputValidation {
         if (checkInputField(String.valueOf(inventory)) || !isInteger(inventory)) {
             inputErrors.append(Text.addProductInventoryError).append("\n");
         }
-        if (!inventory.isEmpty() && !max.isEmpty() && !min.isEmpty()) {
+        if (!inventory.isEmpty() && !max.isEmpty() && !min.isEmpty() && isInteger(inventory) && isInteger(max) && isInteger(min)) {
             if (Integer.parseInt(inventory) > Integer.parseInt(max) || Integer.parseInt(inventory) < Integer.parseInt(min)) {
                 inputErrors.append(Text.addProductInventoryAmountError).append("\n");
             }
@@ -110,7 +110,7 @@ public class InputValidation {
         if (checkInputField(min) || !isInteger(min)) {
             inputErrors.append(Text.addProductMinError).append("\n");
         }
-        if (!min.isEmpty()) {
+        if (!min.isEmpty() && isInteger(min)) {
             if (Integer.parseInt(min) < 0) {
                 inputErrors.append(Text.addProductMinAmountError).append("\n");
             }

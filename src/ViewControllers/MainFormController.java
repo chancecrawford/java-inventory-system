@@ -167,14 +167,22 @@ public class MainFormController {
         MainProductModify.setOnAction(new EventHandler<>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                Stage modifyProductStage = new Stage();
-                modifyProductStage.setTitle(Text.modifyProductTitle);
-                try {
-                    modifyProductStage.setScene(new Scene(FXMLLoader.load(getClass().getResource(Paths.modifyProductScenePath))));
-                } catch (IOException e) {
-                    e.printStackTrace();
+                if (MainProductTable.getSelectionModel().getSelectedItem() != null) {
+                    selectedProduct = MainProductTable.getSelectionModel().getSelectedItem();
+                    selectedProductIndex = Inventory.getAllProducts().indexOf(selectedProduct);
+
+                    Stage modifyProductStage = new Stage();
+                    modifyProductStage.setTitle(Text.modifyProductTitle);
+                    try {
+                        modifyProductStage.setScene(new Scene(FXMLLoader.load(getClass().getResource(Paths.modifyProductScenePath))));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    modifyProductStage.show();
+                    modifyProductStage.setOnHidden(windowEvent -> MainProductTable.setItems(Inventory.getAllProducts()));
+                } else {
+                    Alerts.GenerateAlert("WARNING", "Modify Product Error", "You Must Select A Product To Modify", "", "Show");
                 }
-                modifyProductStage.show();
             }
         });
         MainProductDelete.setOnAction(actionEvent -> {

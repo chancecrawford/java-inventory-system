@@ -51,6 +51,7 @@ public class ModifyPartController {
 
     @FXML
     private void initialize() {
+        // populate fields with selected part info
         ModifyPartID.setText(String.valueOf(selectedPart.getId()));
         ModifyPartName.setText(selectedPart.getName());
         ModifyPartInventory.setText(String.valueOf(selectedPart.getStock()));
@@ -78,7 +79,7 @@ public class ModifyPartController {
     private void setModifyPartButtonEvents() {
         ModifyPartSave.setOnAction(actionEvent -> {
             // set part input values
-            int tempPartId = Integer.parseInt(ModifyPartID.getText().trim());
+            int tempPartId = Integer.parseInt(ModifyPartID.getText());
 
             if (InHouseRadio.isSelected()) {
                 tempPartType = "InHouse";
