@@ -161,6 +161,7 @@ public class MainFormController {
                     e.printStackTrace();
                 }
                 productAddStage.show();
+                productAddStage.setOnHidden(windowEvent -> MainProductTable.setItems(Inventory.getAllProducts()));
             }
         });
         MainProductModify.setOnAction(new EventHandler<>() {

@@ -58,13 +58,14 @@ public class AddPartController {
     private void setAddPartButtonEvents() {
         AddPartSave.setOnAction(actionEvent -> {
             // set part input values
+            // TODO: fix validation here with ints grabbed from input
             int tempPartId = (int) (Math.random() * (9999 - 1 + 1) + 1);
-            String tempPartName = AddPartName.getText();
-            int tempPartInventory = Integer.parseInt(AddPartInventory.getText().trim());
-            double tempPartPrice = Double.parseDouble(AddPartPriceCost.getText());
-            int tempPartMax = Integer.parseInt(AddPartMax.getText().trim());
-            int tempPartMin = Integer.parseInt(AddPartMin.getText().trim());
-            String tempUniqueAttribute = AddPartUniqueAttribute.getText().trim();
+//            String tempPartName = AddPartName.getText();
+//            int tempPartInventory = Integer.parseInt(AddPartInventory.getText().trim());
+//            double tempPartPrice = Double.parseDouble(AddPartPriceCost.getText());
+//            int tempPartMax = Integer.parseInt(AddPartMax.getText().trim());
+//            int tempPartMin = Integer.parseInt(AddPartMin.getText().trim());
+//            String tempUniqueAttribute = AddPartUniqueAttribute.getText().trim();
 
             if (InHouseRadio.isSelected()) {
                 tempPartType = "InHouse";
@@ -76,25 +77,47 @@ public class AddPartController {
                 tempPartType = "";
             }
             // validate inputs before saving part
-            if (InputValidation.validatePartInputs(tempPartName, tempPartInventory, tempPartPrice, tempPartMax, tempPartMin, tempUniqueAttribute, tempPartType)) {
+            if (InputValidation.validatePartInputs(
+                    AddPartName.getText(),
+                    AddPartInventory.getText(),
+                    AddPartPriceCost.getText(),
+                    AddPartMax.getText(),
+                    AddPartMin.getText(),
+                    AddPartUniqueAttribute.getText(),
+                    tempPartType
+            )) {
                 switch (tempPartType) {
                     case "InHouse":
-                        Inventory.addPart(new InHouse(tempPartId, tempPartName, tempPartPrice, tempPartInventory, tempPartMax, tempPartMin, Integer.parseInt(tempUniqueAttribute)));
+                        Inventory.addPart(new InHouse(
+                                tempPartId,
+                                AddPartName.getText(),
+                                Double.parseDouble(AddPartPriceCost.getText()),
+                                Integer.parseInt(AddPartInventory.getText()),
+                                Integer.parseInt(AddPartMax.getText()),
+                                Integer.parseInt(AddPartMin.getText()),
+                                Integer.parseInt(AddPartUniqueAttribute.getText())
+                        ));
                         Alerts.GenerateAlert("INFORMATION", "Part Added", "InHouse Part Added Successfully", "", "Show");
+                        closeWindow();
                         break;
                     case "Outsourced":
-                        Inventory.addPart(new Outsourced(tempPartId, tempPartName, tempPartPrice, tempPartInventory, tempPartMax, tempPartMin, tempUniqueAttribute));
+                        Inventory.addPart(new Outsourced(
+                                tempPartId,
+                                AddPartName.getText(),
+                                Double.parseDouble(AddPartPriceCost.getText()),
+                                Integer.parseInt(AddPartInventory.getText()),
+                                Integer.parseInt(AddPartMax.getText()),
+                                Integer.parseInt(AddPartMin.getText()),
+                                AddPartUniqueAttribute.getText()
+                        ));
                         Alerts.GenerateAlert("INFORMATION", "Part Added", "Outsourced Part Added Successfully", "", "Show");
+                        closeWindow();
                         break;
                 }
             }
-            clearAllFields();
         });
         AddPartCancel.setOnAction(actionEvent -> {
-            stage = (Stage) AddPartCancel.getScene().getWindow();
-            // firing event for main parts table to update with new parts added
-            stage.fireEvent(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
-            stage.close();
+            closeWindow();
         });
     }
 
@@ -104,12 +127,11 @@ public class AddPartController {
         OutsourcedRadio.setOnAction(actionEvent -> AddPartUniqueLabel.setText(Text.addPartCompanyNameLabel));
     }
 
-    private void clearAllFields() {
-        AddPartName.clear();
-        AddPartInventory.clear();
-        AddPartPriceCost.clear();
-        AddPartMax.clear();
-        AddPartMin.clear();
-        AddPartUniqueAttribute.clear();
+    private void closeWindow() {
+        // need to grab instantiated item on parent window to close
+        stage = (Stage) AddPartCancel.getScene().getWindow();
+        // firing event for main parts table to update with new parts added
+        stage.fireEvent(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
+        stage.close();
     }
 }

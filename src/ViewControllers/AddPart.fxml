@@ -65,7 +65,7 @@
                     <Insets left="50.0" />
                 </padding>
             </Label>
-            <Label alignment="CENTER" layoutX="10.0" layoutY="40.0" style="-fx-font-weight: bold;" text="Inv" textAlignment="CENTER" GridPane.rowIndex="2">
+            <Label alignment="CENTER" layoutX="10.0" layoutY="40.0" style="-fx-font-weight: bold;" text="Inventory" textAlignment="CENTER" GridPane.rowIndex="2">
                 <padding>
                     <Insets left="50.0" />
                 </padding>

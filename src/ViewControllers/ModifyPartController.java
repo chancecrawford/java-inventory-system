@@ -78,13 +78,14 @@ public class ModifyPartController {
     private void setModifyPartButtonEvents() {
         ModifyPartSave.setOnAction(actionEvent -> {
             // set part input values
+            // TODO: fix validation here with ints grabbed from input
             int tempPartId = Integer.parseInt(ModifyPartID.getText().trim());
-            String tempPartName = ModifyPartName.getText();
-            int tempPartInventory = Integer.parseInt(ModifyPartInventory.getText().trim());
-            double tempPartPrice = Double.parseDouble(ModifyPartPriceCost.getText());
-            int tempPartMax = Integer.parseInt(ModifyPartMax.getText().trim());
-            int tempPartMin = Integer.parseInt(ModifyPartMin.getText().trim());
-            String tempUniqueAttribute = ModifyPartUniqueAttribute.getText().trim();
+//            String tempPartName = ModifyPartName.getText();
+//            int tempPartInventory = Integer.parseInt(ModifyPartInventory.getText().trim());
+//            double tempPartPrice = Double.parseDouble(ModifyPartPriceCost.getText());
+//            int tempPartMax = Integer.parseInt(ModifyPartMax.getText().trim());
+//            int tempPartMin = Integer.parseInt(ModifyPartMin.getText().trim());
+//            String tempUniqueAttribute = ModifyPartUniqueAttribute.getText().trim();
 
             if (InHouseRadio.isSelected()) {
                 tempPartType = "InHouse";
@@ -96,26 +97,50 @@ public class ModifyPartController {
                 tempPartType = "";
             }
             // validate inputs before saving part
-            if (InputValidation.validatePartInputs(tempPartName, tempPartInventory, tempPartPrice, tempPartMax, tempPartMin, tempUniqueAttribute, tempPartType)) {
+            if (InputValidation.validatePartInputs(
+                    ModifyPartName.getText(),
+                    ModifyPartInventory.getText(),
+                    ModifyPartPriceCost.getText(),
+                    ModifyPartMax.getText(),
+                    ModifyPartMin.getText(),
+                    ModifyPartUniqueAttribute.getText(),
+                    tempPartType
+            )) {
                 switch (tempPartType) {
                     case "InHouse":
-                        InHouse updatedInHousePart = new InHouse(tempPartId, tempPartName, tempPartPrice, tempPartInventory, tempPartMax, tempPartMin, Integer.parseInt(tempUniqueAttribute));
+                        InHouse updatedInHousePart = new InHouse(
+                                tempPartId,
+                                ModifyPartName.getText(),
+                                Double.parseDouble(ModifyPartPriceCost.getText()),
+                                Integer.parseInt(ModifyPartInventory.getText()),
+                                Integer.parseInt(ModifyPartMin.getText()),
+                                Integer.parseInt(ModifyPartMax.getText()),
+                                Integer.parseInt(ModifyPartUniqueAttribute.getText())
+                        );
                         Inventory.updatePart(selectedPartIndex, updatedInHousePart);
                         Alerts.GenerateAlert("INFORMATION", "Part Updated", "InHouse Part Updated Successfully", "", "Show");
+                        closeWindow();
                         break;
                     case "Outsourced":
-                        Outsourced updatedOutsourcePart = new Outsourced(tempPartId, tempPartName, tempPartPrice, tempPartInventory, tempPartMax, tempPartMin, tempUniqueAttribute);
+                        Outsourced updatedOutsourcePart = new Outsourced(
+                                tempPartId,
+                                ModifyPartName.getText(),
+                                Double.parseDouble(ModifyPartPriceCost.getText()),
+                                Integer.parseInt(ModifyPartInventory.getText()),
+                                Integer.parseInt(ModifyPartMin.getText()),
+                                Integer.parseInt(ModifyPartMax.getText()),
+                                ModifyPartUniqueAttribute.getText()
+                        );
                         Inventory.updatePart(selectedPartIndex, updatedOutsourcePart);
                         Alerts.GenerateAlert("INFORMATION", "Part Updated", "Outsourced Part Updated Successfully", "", "Show");
+                        closeWindow();
                         break;
                 }
             }
+
         });
         ModifyPartCancel.setOnAction(actionEvent -> {
-            stage = (Stage) ModifyPartCancel.getScene().getWindow();
-            // firing event for main parts table to update with new parts added
-            stage.fireEvent(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
-            stage.close();
+            closeWindow();
         });
     }
 
@@ -123,5 +148,13 @@ public class ModifyPartController {
     private void setPartTypeListener() {
         InHouseRadio.setOnAction(actionEvent -> ModifyPartUniqueLabel.setText(Text.addPartMachineIDLabel));
         OutsourcedRadio.setOnAction(actionEvent -> ModifyPartUniqueLabel.setText(Text.addPartCompanyNameLabel));
+    }
+
+    private void closeWindow() {
+        // need to grab instantiated item on parent window to close
+        stage = (Stage) ModifyPartCancel.getScene().getWindow();
+        // firing event for main parts table to update with new parts added
+        stage.fireEvent(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
+        stage.close();
     }
 }
