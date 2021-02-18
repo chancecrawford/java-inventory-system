@@ -7,20 +7,13 @@ import Data.*;
 import Utilities.*;
 
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class AddPartController {
     Stage stage;
 
-    @FXML
-    private AnchorPane AddPartAnchorPane;
     @FXML
     private RadioButton InHouseRadio;
     @FXML
@@ -58,14 +51,7 @@ public class AddPartController {
     private void setAddPartButtonEvents() {
         AddPartSave.setOnAction(actionEvent -> {
             // set part input values
-            // TODO: fix validation here with ints grabbed from input
             int tempPartId = (int) (Math.random() * (9999 - 1 + 1) + 1);
-//            String tempPartName = AddPartName.getText();
-//            int tempPartInventory = Integer.parseInt(AddPartInventory.getText().trim());
-//            double tempPartPrice = Double.parseDouble(AddPartPriceCost.getText());
-//            int tempPartMax = Integer.parseInt(AddPartMax.getText().trim());
-//            int tempPartMin = Integer.parseInt(AddPartMin.getText().trim());
-//            String tempUniqueAttribute = AddPartUniqueAttribute.getText().trim();
 
             if (InHouseRadio.isSelected()) {
                 tempPartType = "InHouse";
@@ -116,9 +102,7 @@ public class AddPartController {
                 }
             }
         });
-        AddPartCancel.setOnAction(actionEvent -> {
-            closeWindow();
-        });
+        AddPartCancel.setOnAction(actionEvent -> closeWindow());
     }
 
     @FXML

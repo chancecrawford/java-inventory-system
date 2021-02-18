@@ -78,14 +78,7 @@ public class ModifyPartController {
     private void setModifyPartButtonEvents() {
         ModifyPartSave.setOnAction(actionEvent -> {
             // set part input values
-            // TODO: fix validation here with ints grabbed from input
             int tempPartId = Integer.parseInt(ModifyPartID.getText().trim());
-//            String tempPartName = ModifyPartName.getText();
-//            int tempPartInventory = Integer.parseInt(ModifyPartInventory.getText().trim());
-//            double tempPartPrice = Double.parseDouble(ModifyPartPriceCost.getText());
-//            int tempPartMax = Integer.parseInt(ModifyPartMax.getText().trim());
-//            int tempPartMin = Integer.parseInt(ModifyPartMin.getText().trim());
-//            String tempUniqueAttribute = ModifyPartUniqueAttribute.getText().trim();
 
             if (InHouseRadio.isSelected()) {
                 tempPartType = "InHouse";
@@ -139,9 +132,7 @@ public class ModifyPartController {
             }
 
         });
-        ModifyPartCancel.setOnAction(actionEvent -> {
-            closeWindow();
-        });
+        ModifyPartCancel.setOnAction(actionEvent -> closeWindow());
     }
 
     @FXML
