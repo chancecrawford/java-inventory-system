@@ -6,6 +6,7 @@ import Classes.Part;
 import Classes.Product;
 
 import Utilities.Alerts;
+import Utilities.InputValidation;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -21,7 +22,6 @@ import java.io.IOException;
 
 public class MainFormController {
 
-    // initializing FXML elements for:
     // Parts table
     @FXML
     private Button PartSearchButton;
@@ -95,15 +95,20 @@ public class MainFormController {
 
     private void setMainButtonEvents() {
         PartSearchButton.setOnAction(actionEvent -> {
+            String searchQuery = MainPartSearch.getText().trim();
 
-            // maybe need an if/else for checking if search input is an int or string (id or name)
-            // isInteger --> search by part ID
-            // else search by name
-
-            ObservableList<Part> filteredList = FXCollections.observableArrayList();
-            filteredList = Inventory.lookupPart(MainPartSearch.getText());
-
-            MainPartTable.setItems(filteredList);
+            if (InputValidation.isInteger(searchQuery)) {
+                int searchId = Integer.parseInt(searchQuery);
+                ObservableList<Part> searchedPartIdList = FXCollections.observableArrayList(Inventory.lookupPart(searchId));
+                MainPartTable.setItems(searchedPartIdList);
+            } else {
+                ObservableList<Part> searchedPartList = FXCollections.observableArrayList(Inventory.lookupPart(searchQuery));
+                if (!searchedPartList.isEmpty()) {
+                    MainPartTable.setItems(Inventory.lookupPart(searchQuery));
+                } else {
+                    Alerts.GenerateAlert("WARNING", "Part Search Error", "Unable to locate part with that name", "", "ShowAndWait");
+                }
+            }
         });
         MainPartAdd.setOnAction(new EventHandler<>() {
             @Override
@@ -150,6 +155,22 @@ public class MainFormController {
                 MainPartTable.setItems(Inventory.getAllParts());
             }
         });
+        ProductSearchButton.setOnAction(actionEvent -> {
+            String searchQuery = MainProductSearch.getText().trim();
+
+            if (InputValidation.isInteger(searchQuery)) {
+                int searchId = Integer.parseInt(searchQuery);
+                ObservableList<Product> searchedProductIdList = FXCollections.observableArrayList(Inventory.lookupProduct(searchId));
+                MainProductTable.setItems(searchedProductIdList);
+            } else {
+                ObservableList<Product> searchedProductList = FXCollections.observableArrayList(Inventory.lookupProduct(searchQuery));
+                if (!searchedProductList.isEmpty()) {
+                    MainProductTable.setItems(Inventory.lookupProduct(searchQuery));
+                } else {
+                    Alerts.GenerateAlert("WARNING", "Product Search Error", "Unable to locate product with that name", "", "ShowAndWait");
+                }
+            }
+        });
         MainProductAdd.setOnAction(new EventHandler<>() {
             @Override
             public void handle(ActionEvent actionEvent) {
@@ -194,11 +215,5 @@ public class MainFormController {
             }
         });
         MainExitButton.setOnAction(event -> System.exit(0));
-    }
-
-    // TODO: Figure out how to use these two stupid part/product search functions in an easy/intuitive way
-    @FXML
-    public void partSearchFilter() {
-
     }
 }

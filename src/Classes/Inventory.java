@@ -1,12 +1,13 @@
 package Classes;
 
+import Utilities.Alerts;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class Inventory {
     // pulling array lists of parts/products
-    private static ObservableList<Part> allParts = FXCollections.observableArrayList();
-    private static ObservableList<Product> allProducts = FXCollections.observableArrayList();
+    private static final ObservableList<Part> allParts = FXCollections.observableArrayList();
+    private static final ObservableList<Product> allProducts = FXCollections.observableArrayList();
 
     // default constructor
     public Inventory() {
@@ -22,27 +23,25 @@ public class Inventory {
 
     public static Part lookupPart(int partId) {
         if(!allParts.isEmpty()) {
-            for (Part allPart : allParts) {
-                if (allPart.getId() == partId) {
-                    return allPart;
+            for (Part part : allParts) {
+                if (String.valueOf(part.getId()).contains(String.valueOf(partId))) {
+                    return part;
                 }
             }
         }
-//        throw new Error("Unable to locate part with that Part ID");
-        System.out.println("Unable to locate part with that Part ID");
+        Alerts.GenerateAlert("WARNING", "Part Search Error", "Unable to locate part with that Part ID", "", "ShowAndWait");
         return null;
     }
 
     public static Product lookupProduct(int productId) {
         if(!allProducts.isEmpty()) {
-            for (Product allProduct : allProducts) {
-                if (allProduct.getId() == productId) {
-                    return allProduct;
+            for (Product product : allProducts) {
+                if (String.valueOf(product.getId()).contains(String.valueOf(productId))) {
+                    return product;
                 }
             }
         }
-//        throw new Error("Unable to locate product with that Product ID");
-        System.out.println("Unable to locate product with that Product ID");
+        Alerts.GenerateAlert("WARNING", "Product Search Error", "Unable to locate product with that Product ID", "", "ShowAndWait");
         return null;
     }
 
@@ -50,15 +49,13 @@ public class Inventory {
         ObservableList<Part> searchResult = FXCollections.observableArrayList();
 
         if (!allParts.isEmpty()) {
-            for (Part allPart : allParts) {
-                if (allPart.getName().contains(partName)) {
-                    searchResult.add(allPart);
+            for (Part part : allParts) {
+                if (part.getName().toLowerCase().contains(partName.toLowerCase().trim())) {
+                    searchResult.add(part);
                 }
             }
-        return searchResult;
+            return searchResult;
         }
-//        throw new Error("Unable to locate part with that name");
-        System.out.println("Unable to locate part with that name");
         return null;
     }
 
@@ -66,15 +63,13 @@ public class Inventory {
         ObservableList<Product> searchResult = FXCollections.observableArrayList();
 
         if (!allProducts.isEmpty()) {
-            for (int i = 0; i < allParts.size(); i++) {
-                if (allParts.get(i).getName().contains(productName)) {
-                    searchResult.add(allProducts.get(i));
+            for (Product product : allProducts) {
+                if (product.getName().toLowerCase().contains(productName.toLowerCase().trim())) {
+                    searchResult.add(product);
                 }
             }
             return searchResult;
         }
-//        throw new Error("Unable to locate part with that name");
-        System.out.println("Unable to locate product with that name");
         return null;
     }
 

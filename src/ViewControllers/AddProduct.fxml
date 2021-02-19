@@ -142,6 +142,11 @@
                 <padding>
                     <Insets bottom="15.0" />
                 </padding>
+            <Button fx:id="AddPartSearchButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="81.0" text="Search">
+               <HBox.margin>
+                  <Insets right="20.0" />
+               </HBox.margin>
+            </Button>
                 <TextField fx:id="AddProductSearch" alignment="CENTER" prefHeight="21.0" prefWidth="163.0" promptText="Search By Part ID or Name">
                     <HBox.margin>
                         <Insets bottom="4.0" />

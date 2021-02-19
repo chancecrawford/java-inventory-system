@@ -26,10 +26,10 @@ public class InventorySystem extends Application {
     }
 
     void createTestInventory() {
-        Inventory.addPart(new InHouse(01, "IH Part 1", 3.50, 5, 1, 10, 55));
-        Inventory.addPart(new Outsourced(03, "OS Part 1", 4.50, 3, 1, 20, "Streisshand"));
+        Inventory.addPart(new InHouse(1234, "InHouse Part", 3.50, 5, 1, 10, 5532));
+        Inventory.addPart(new Outsourced(8541, "Outsourced Part", 4.50, 3, 1, 20, "Stray"));
 
-//        Inventory.addProduct(new Product(15, "Prod 01", 5.25, 6, 1, 8));
-//        Inventory.addProduct(new Product(18, "Prod 02", 2.25, 9, 1, 12));
+        Inventory.addProduct(new Product(1511, "Product", 5.25, 6, 1, 8));
+        Inventory.addProduct(new Product(1823, "Bicycle", 2.25, 9, 1, 12));
     }
 }

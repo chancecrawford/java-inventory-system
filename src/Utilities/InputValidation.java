@@ -4,12 +4,10 @@ import Classes.Part;
 import Data.Text;
 import javafx.collections.ObservableList;
 
-import java.util.ArrayList;
-
 public class InputValidation {
 
     public static boolean checkInputField(String userInput) {
-        return userInput == null || userInput.trim().isEmpty();
+        return userInput != null && !userInput.trim().isEmpty();
     }
 
     public static boolean isInteger(String userInput) {
@@ -35,10 +33,10 @@ public class InputValidation {
     public static boolean validatePartInputs(String name, String inventory, String priceCost, String max, String min, String uniqueAttribute, String partType) {
         StringBuilder inputErrors = new StringBuilder();
 
-        if (checkInputField(name)) {
+        if (!checkInputField(name)) {
             inputErrors.append(Text.addPartNameError).append("\n");
         }
-        if (checkInputField(String.valueOf(inventory)) || !isInteger(inventory)) {
+        if (!checkInputField(String.valueOf(inventory)) || !isInteger(inventory)) {
             inputErrors.append(Text.addPartInventoryError).append("\n");
         }
         if (!inventory.isEmpty() && !max.isEmpty() && !min.isEmpty() && isInteger(inventory) && isInteger(max) && isInteger(min)) {
@@ -46,14 +44,14 @@ public class InputValidation {
                 inputErrors.append(Text.addPartInventoryAmountError).append("\n");
             }
         }
-        if (checkInputField(priceCost) || !isDouble(priceCost)) {
+        if (!checkInputField(priceCost) || !isDouble(priceCost)) {
             inputErrors.append(Text.addPartPriceCostError).append("\n");
         }
 
-        if (checkInputField(max) || !isInteger(max)) {
+        if (!checkInputField(max) || !isInteger(max)) {
             inputErrors.append(Text.addPartMaxError).append("\n");
         }
-        if (checkInputField(min) || !isInteger(min)) {
+        if (!checkInputField(min) || !isInteger(min)) {
             inputErrors.append(Text.addPartMinError).append("\n");
         }
         if (!min.isEmpty() && isInteger(min)) {
@@ -64,12 +62,12 @@ public class InputValidation {
 
         switch (partType) {
             case "InHouse":
-                if (checkInputField(uniqueAttribute) || !isInteger(uniqueAttribute)) {
+                if (!checkInputField(uniqueAttribute) || !isInteger(uniqueAttribute)) {
                     inputErrors.append(Text.addPartMachineIdError);
                 }
                 break;
             case "Outsourced":
-                if (checkInputField(uniqueAttribute)) {
+                if (!checkInputField(uniqueAttribute)) {
                     inputErrors.append(Text.addPartCompanyNameError);
                 }
                 break;
@@ -89,10 +87,10 @@ public class InputValidation {
     public static boolean validateProductInputs(String name, String inventory, String priceCost, String max, String min, ObservableList<Part> productParts) {
         StringBuilder inputErrors = new StringBuilder();
 
-        if (checkInputField(name)) {
+        if (!checkInputField(name)) {
             inputErrors.append(Text.addProductNameError).append("\n");
         }
-        if (checkInputField(String.valueOf(inventory)) || !isInteger(inventory)) {
+        if (!checkInputField(String.valueOf(inventory)) || !isInteger(inventory)) {
             inputErrors.append(Text.addProductInventoryError).append("\n");
         }
         if (!inventory.isEmpty() && !max.isEmpty() && !min.isEmpty() && isInteger(inventory) && isInteger(max) && isInteger(min)) {
@@ -100,14 +98,14 @@ public class InputValidation {
                 inputErrors.append(Text.addProductInventoryAmountError).append("\n");
             }
         }
-        if (checkInputField(priceCost) || !isDouble(priceCost)) {
+        if (!checkInputField(priceCost) || !isDouble(priceCost)) {
             inputErrors.append(Text.addProductPriceCostError).append("\n");
         }
 
-        if (checkInputField(max) || !isInteger(max)) {
+        if (!checkInputField(max) || !isInteger(max)) {
             inputErrors.append(Text.addProductMaxError).append("\n");
         }
-        if (checkInputField(min) || !isInteger(min)) {
+        if (!checkInputField(min) || !isInteger(min)) {
             inputErrors.append(Text.addProductMinError).append("\n");
         }
         if (!min.isEmpty() && isInteger(min)) {

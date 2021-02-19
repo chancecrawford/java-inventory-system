@@ -5,6 +5,7 @@ import Classes.Part;
 import Classes.Product;
 import Utilities.Alerts;
 import Utilities.InputValidation;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -18,6 +19,8 @@ import javafx.stage.WindowEvent;
 public class ModifyProductController {
     Stage stage;
 
+    @FXML
+    private Button ModifyPartSearchButton;
     @FXML
     private TextField ModifyProductSearch;
     @FXML
@@ -99,8 +102,21 @@ public class ModifyProductController {
 
     @FXML
     private void setModifyProductButtonEvents() {
-        ModifyProductSearch.setOnAction(actionEvent -> {
+        ModifyPartSearchButton.setOnAction(actionEvent -> {
+            String searchQuery = ModifyProductSearch.getText().trim();
 
+            if (InputValidation.isInteger(searchQuery)) {
+                int searchId = Integer.parseInt(searchQuery);
+                ObservableList<Part> searchedPartIdList = FXCollections.observableArrayList(Inventory.lookupPart(searchId));
+                ModifyProductPartsTable.setItems(searchedPartIdList);
+            } else {
+                ObservableList<Part> searchedPartList = FXCollections.observableArrayList(Inventory.lookupPart(searchQuery));
+                if (!searchedPartList.isEmpty()) {
+                    ModifyProductPartsTable.setItems(Inventory.lookupPart(searchQuery));
+                } else {
+                    Alerts.GenerateAlert("WARNING", "Part Search Error", "Unable to locate part with that name", "", "ShowAndWait");
+                }
+            }
         });
         ModifyAddPendingPart.setOnAction(actionEvent -> tempPartsToAdd.add(ModifyProductPartsTable.getSelectionModel().getSelectedItem()));
         ModifyProductDelete.setOnAction(actionEvent -> {

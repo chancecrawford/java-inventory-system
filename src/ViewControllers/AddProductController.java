@@ -20,6 +20,8 @@ public class AddProductController {
     Stage stage;
 
     @FXML
+    private Button AddPartSearchButton;
+    @FXML
     private TextField AddProductSearch;
     @FXML
     private TextField AddProductName;
@@ -87,12 +89,23 @@ public class AddProductController {
 
     @FXML
     private void setAddProductButtonEvents() {
-        AddProductSearch.setOnAction(actionEvent -> {
+        AddPartSearchButton.setOnAction(actionEvent -> {
+            String searchQuery = AddProductSearch.getText().trim();
 
+            if (InputValidation.isInteger(searchQuery)) {
+                int searchId = Integer.parseInt(searchQuery);
+                ObservableList<Part> searchedPartIdList = FXCollections.observableArrayList(Inventory.lookupPart(searchId));
+                AddProductPartsTable.setItems(searchedPartIdList);
+            } else {
+                ObservableList<Part> searchedPartList = FXCollections.observableArrayList(Inventory.lookupPart(searchQuery));
+                if (!searchedPartList.isEmpty()) {
+                    AddProductPartsTable.setItems(Inventory.lookupPart(searchQuery));
+                } else {
+                    Alerts.GenerateAlert("WARNING", "Part Search Error", "Unable to locate part with that name", "", "ShowAndWait");
+                }
+            }
         });
-        AddPendingPart.setOnAction(actionEvent -> {
-            tempPartsToAdd.add(AddProductPartsTable.getSelectionModel().getSelectedItem());
-        });
+        AddPendingPart.setOnAction(actionEvent -> tempPartsToAdd.add(AddProductPartsTable.getSelectionModel().getSelectedItem()));
         AddProductDelete.setOnAction(actionEvent -> {
             if (AddPendingPartTable.getSelectionModel().getSelectedItem() != null) {
                 tempPartsToAdd.remove(AddPendingPartTable.getSelectionModel().getSelectedItem());
