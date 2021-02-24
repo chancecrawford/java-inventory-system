@@ -174,7 +174,7 @@
                     </HBox.margin>
                 </Button>
             </HBox>
-            <TableView fx:id="ModifyPendingPartTable" prefHeight="158.0" prefWidth="631.0">
+            <TableView fx:id="ModifyProductAssociatedPartsTable" prefHeight="158.0" prefWidth="631.0">
                 <columns>
                     <TableColumn fx:id="pendingPartPriceCostColumn" prefWidth="144.0" text="Price Per unit" />
                     <TableColumn fx:id="pendingPartInventoryColumn" prefWidth="162.0" text="Inventory Level" />
@@ -186,7 +186,7 @@
                 <VBox.margin>
                     <Insets left="15.0" />
                 </VBox.margin>
-                <Button fx:id="ModifyProductDelete" mnemonicParsing="false" text="Remove Associated Part">
+                <Button fx:id="ModifyProductRemovePart" mnemonicParsing="false" text="Remove Associated Part">
                     <padding>
                         <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
                     </padding>

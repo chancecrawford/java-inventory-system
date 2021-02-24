@@ -50,7 +50,7 @@ public class ModifyProductController {
     private Button ModifyAddPendingPart;
 
     @FXML
-    private TableView<Part> ModifyPendingPartTable;
+    private TableView<Part> ModifyProductAssociatedPartsTable;
     @FXML
     private TableColumn<Part, Integer> pendingPartIdColumn;
     @FXML
@@ -60,7 +60,7 @@ public class ModifyProductController {
     @FXML
     private TableColumn<Part, Double> pendingPartPriceCostColumn;
     @FXML
-    private Button ModifyProductDelete;
+    private Button ModifyProductRemovePart;
     @FXML
     private Button ModifyProductSave;
     @FXML
@@ -90,7 +90,7 @@ public class ModifyProductController {
         modifyPartPriceCostColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
 
         // populate pending parts table with data from Inventory System
-        ModifyPendingPartTable.setItems(tempPartsToAdd);
+        ModifyProductAssociatedPartsTable.setItems(tempPartsToAdd);
         pendingPartIdColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         pendingPartNameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         pendingPartInventoryColumn.setCellValueFactory(new PropertyValueFactory<>("stock"));
@@ -119,9 +119,9 @@ public class ModifyProductController {
             }
         });
         ModifyAddPendingPart.setOnAction(actionEvent -> tempPartsToAdd.add(ModifyProductPartsTable.getSelectionModel().getSelectedItem()));
-        ModifyProductDelete.setOnAction(actionEvent -> {
-            if (ModifyProductPartsTable.getSelectionModel().getSelectedItem() != null) {
-                tempPartsToAdd.remove(ModifyPendingPartTable.getSelectionModel().getSelectedItem());
+        ModifyProductRemovePart.setOnAction(actionEvent -> {
+            if (ModifyProductAssociatedPartsTable.getSelectionModel().getSelectedItem() != null) {
+                tempPartsToAdd.remove(ModifyProductAssociatedPartsTable.getSelectionModel().getSelectedItem());
             }
         });
         ModifyProductSave.setOnAction(actionEvent -> {
@@ -133,7 +133,7 @@ public class ModifyProductController {
                     ModifyProductPriceCost.getText(),
                     ModifyProductMax.getText().trim(),
                     ModifyProductMin.getText().trim(),
-                    ModifyPendingPartTable.getItems()
+                    ModifyProductAssociatedPartsTable.getItems()
             )) {
                 Product updatedProduct = new Product(
                         tempProductId,

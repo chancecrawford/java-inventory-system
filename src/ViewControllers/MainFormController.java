@@ -73,6 +73,10 @@ public class MainFormController {
     public static Product selectedProduct;
     public static int selectedProductIndex;
 
+    // TODO: Correct tab order for elements in all views
+    // add confirmations for remove/delete actions
+    // figure out what "Javadoc" comments are
+
     @FXML
     private void initialize() {
         // populate parts table with data from Inventory System
@@ -209,7 +213,11 @@ public class MainFormController {
         MainProductDelete.setOnAction(actionEvent -> {
             Product selectedProduct = MainProductTable.getSelectionModel().getSelectedItem();
             if (selectedProduct != null) {
-                Inventory.deleteProduct(selectedProduct);
+                if (selectedProduct.getAllAssociatedParts().isEmpty()) {
+                    Inventory.deleteProduct(selectedProduct);
+                } else {
+                    Alerts.GenerateAlert("WARNING", "Delete Product Error", "You Cannot Delete A Product With Associated Parts", "", "Show");
+                }
                 // table isn't refreshing automatically after a .remove here as well
                 MainProductTable.setItems(Inventory.getAllProducts());
             }
