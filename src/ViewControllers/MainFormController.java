@@ -74,7 +74,6 @@ public class MainFormController {
     public static int selectedProductIndex;
 
     // TODO: Correct tab order for elements in all views
-    // add confirmations for remove/delete actions
     // figure out what "Javadoc" comments are
 
     @FXML
@@ -110,7 +109,7 @@ public class MainFormController {
                 if (!searchedPartList.isEmpty()) {
                     MainPartTable.setItems(Inventory.lookupPart(searchQuery));
                 } else {
-                    Alerts.GenerateAlert("WARNING", "Part Search Error", "Unable to locate part with that name", "", "ShowAndWait");
+                    Alerts.GenerateAlert("WARNING", "Part Search Error", "Unable to locate part with that name", "", "Show");
                 }
             }
         });
@@ -153,10 +152,15 @@ public class MainFormController {
         MainPartDelete.setOnAction(actionEvent -> {
             Part selectedPart = MainPartTable.getSelectionModel().getSelectedItem();
             if (selectedPart != null) {
-                Inventory.deletePart(selectedPart);
-                // not sure why the table isn't refreshing automatically after a .remove
-                // is performed on the obs arr list
-                MainPartTable.setItems(Inventory.getAllParts());
+                Alert deletePartWarning = new Alert(Alert.AlertType.CONFIRMATION, "Delete " + selectedPart.getName() + "?", ButtonType.OK, ButtonType.CANCEL);
+                deletePartWarning.showAndWait();
+
+                if (deletePartWarning.getResult() == ButtonType.OK) {
+                    Inventory.deletePart(selectedPart);
+                    // not sure why the table isn't refreshing automatically after a .remove
+                    // is performed on the obs arr list
+                    MainPartTable.setItems(Inventory.getAllParts());
+                }
             }
         });
         ProductSearchButton.setOnAction(actionEvent -> {
@@ -171,7 +175,7 @@ public class MainFormController {
                 if (!searchedProductList.isEmpty()) {
                     MainProductTable.setItems(Inventory.lookupProduct(searchQuery));
                 } else {
-                    Alerts.GenerateAlert("WARNING", "Product Search Error", "Unable to locate product with that name", "", "ShowAndWait");
+                    Alerts.GenerateAlert("WARNING", "Product Search Error", "Unable to locate product with that name", "", "Show");
                 }
             }
         });
@@ -212,14 +216,18 @@ public class MainFormController {
         });
         MainProductDelete.setOnAction(actionEvent -> {
             Product selectedProduct = MainProductTable.getSelectionModel().getSelectedItem();
+
             if (selectedProduct != null) {
-                if (selectedProduct.getAllAssociatedParts().isEmpty()) {
+                Alert deleteProductWarning = new Alert(Alert.AlertType.CONFIRMATION, "Delete " + selectedProduct.getName() + "?", ButtonType.OK, ButtonType.CANCEL);
+                deleteProductWarning.showAndWait();
+
+                if (deleteProductWarning.getResult() == ButtonType.OK && selectedProduct.getAllAssociatedParts().isEmpty()) {
                     Inventory.deleteProduct(selectedProduct);
+                    // table isn't refreshing automatically after a .remove here as well
+                    MainProductTable.setItems(Inventory.getAllProducts());
                 } else {
                     Alerts.GenerateAlert("WARNING", "Delete Product Error", "You Cannot Delete A Product With Associated Parts", "", "Show");
                 }
-                // table isn't refreshing automatically after a .remove here as well
-                MainProductTable.setItems(Inventory.getAllProducts());
             }
         });
         MainExitButton.setOnAction(event -> System.exit(0));

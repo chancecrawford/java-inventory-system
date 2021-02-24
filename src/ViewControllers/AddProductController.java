@@ -101,7 +101,7 @@ public class AddProductController {
                 if (!searchedPartList.isEmpty()) {
                     AddProductPartsTable.setItems(Inventory.lookupPart(searchQuery));
                 } else {
-                    Alerts.GenerateAlert("WARNING", "Part Search Error", "Unable to locate part with that name", "", "ShowAndWait");
+                    Alerts.GenerateAlert("WARNING", "Part Search Error", "Unable to locate part with that name", "", "Show");
                 }
             }
         });
