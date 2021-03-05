@@ -120,7 +120,8 @@ public class AddProductController {
                     AddProductPriceCost.getText(),
                     AddProductMax.getText().trim(),
                     AddProductMin.getText().trim(),
-                    AddPendingPartTable.getItems()
+                    AddPendingPartTable.getItems(),
+                    (Stage)AddProductCancel.getScene().getWindow()
             )) {
                 Product tempProduct = new Product(
                         tempProductId,

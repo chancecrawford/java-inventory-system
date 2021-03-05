@@ -21,7 +21,6 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class MainFormController {
-
     // Parts table
     @FXML
     private Button PartSearchButton;
@@ -67,15 +66,17 @@ public class MainFormController {
     @FXML
     private Button MainExitButton;
 
-    // selections and there indexes for use in modifying them later
+    // selections and their indexes for use in modifying them later
     public static Part selectedPart;
     public static int selectedPartIndex;
     public static Product selectedProduct;
     public static int selectedProductIndex;
 
-    // TODO: Correct tab order for elements in all views
-    // figure out what "Javadoc" comments are
+    // TODO: create build for project turn-in
 
+    /**
+     * Initializes and sets values for parts and products tables
+     */
     @FXML
     private void initialize() {
         // populate parts table with data from Inventory System
@@ -96,23 +97,34 @@ public class MainFormController {
         setMainButtonEvents();
     }
 
+    /**
+     * Sets action events for buttons
+     *
+     * Part/Product Search Buttons
+     * Part/Product Add/Modify/Delete Buttons
+     * Application Exit Button
+     *
+     */
     private void setMainButtonEvents() {
+        // check for input type (part id or name) to then search with correct method
         PartSearchButton.setOnAction(actionEvent -> {
             String searchQuery = MainPartSearch.getText().trim();
-
+            // check if search input is an int
             if (InputValidation.isInteger(searchQuery)) {
                 int searchId = Integer.parseInt(searchQuery);
                 ObservableList<Part> searchedPartIdList = FXCollections.observableArrayList(Inventory.lookupPart(searchId));
                 MainPartTable.setItems(searchedPartIdList);
             } else {
                 ObservableList<Part> searchedPartList = FXCollections.observableArrayList(Inventory.lookupPart(searchQuery));
+                // verify field isn't empty before searching for a part name
                 if (!searchedPartList.isEmpty()) {
                     MainPartTable.setItems(Inventory.lookupPart(searchQuery));
                 } else {
-                    Alerts.GenerateAlert("WARNING", "Part Search Error", "Unable to locate part with that name", "", "Show");
+                    Alerts.GenerateAlert("WARNING", "Part Search Error", Text.partSearchError, "", "Show");
                 }
             }
         });
+        // creates and displays add part form on click
         MainPartAdd.setOnAction(new EventHandler<>() {
             @Override
             public void handle(ActionEvent actionEvent) {
@@ -128,10 +140,12 @@ public class MainFormController {
                 addPartStage.setOnHidden(windowEvent -> MainPartTable.setItems(Inventory.getAllParts()));
             }
         });
+        // creates and displays modify part form on click
         MainPartModify.setOnAction(new EventHandler<>() {
             @Override
             public void handle(ActionEvent actionEvent) {
                 if (MainPartTable.getSelectionModel().getSelectedItem() != null) {
+                    // grab selection and index to pass to modify part form
                     selectedPart = MainPartTable.getSelectionModel().getSelectedItem();
                     selectedPartIndex = Inventory.getAllParts().indexOf(selectedPart);
 
@@ -143,15 +157,18 @@ public class MainFormController {
                         e.printStackTrace();
                     }
                     modifyPartStage.show();
+                    // set event for part table to update after window closes
                     modifyPartStage.setOnHidden(windowEvent -> MainPartTable.setItems(Inventory.getAllParts()));
                 } else {
-                    Alerts.GenerateAlert("WARNING", "Modify Part Error", "You Must Select A Part To Modify", "", "Show");
+                    Alerts.GenerateAlert("WARNING", "Modify Part Error", Text.partModifySelectionError, "", "Show");
                 }
             }
         });
+        // deletes part selection after confirmation
         MainPartDelete.setOnAction(actionEvent -> {
             Part selectedPart = MainPartTable.getSelectionModel().getSelectedItem();
             if (selectedPart != null) {
+                // can't use Alerts class here due to needing to verify against user response from alert
                 Alert deletePartWarning = new Alert(Alert.AlertType.CONFIRMATION, "Delete " + selectedPart.getName() + "?", ButtonType.OK, ButtonType.CANCEL);
                 deletePartWarning.showAndWait();
 
@@ -163,22 +180,26 @@ public class MainFormController {
                 }
             }
         });
+        // check for input type (product id or name) to then search with correct method
         ProductSearchButton.setOnAction(actionEvent -> {
             String searchQuery = MainProductSearch.getText().trim();
 
+            // check if search input is an int
             if (InputValidation.isInteger(searchQuery)) {
                 int searchId = Integer.parseInt(searchQuery);
                 ObservableList<Product> searchedProductIdList = FXCollections.observableArrayList(Inventory.lookupProduct(searchId));
                 MainProductTable.setItems(searchedProductIdList);
             } else {
                 ObservableList<Product> searchedProductList = FXCollections.observableArrayList(Inventory.lookupProduct(searchQuery));
+                // verify field isn't empty before searching for a part name
                 if (!searchedProductList.isEmpty()) {
                     MainProductTable.setItems(Inventory.lookupProduct(searchQuery));
                 } else {
-                    Alerts.GenerateAlert("WARNING", "Product Search Error", "Unable to locate product with that name", "", "Show");
+                    Alerts.GenerateAlert("WARNING", "Product Search Error", Text.productSearchError, "", "Show");
                 }
             }
         });
+        // creates and displays add product form on click
         MainProductAdd.setOnAction(new EventHandler<>() {
             @Override
             public void handle(ActionEvent actionEvent) {
@@ -193,10 +214,12 @@ public class MainFormController {
                 productAddStage.setOnHidden(windowEvent -> MainProductTable.setItems(Inventory.getAllProducts()));
             }
         });
+        // creates and displays modify part form on click
         MainProductModify.setOnAction(new EventHandler<>() {
             @Override
             public void handle(ActionEvent actionEvent) {
                 if (MainProductTable.getSelectionModel().getSelectedItem() != null) {
+                    // grab selection and index to pass to modify product form
                     selectedProduct = MainProductTable.getSelectionModel().getSelectedItem();
                     selectedProductIndex = Inventory.getAllProducts().indexOf(selectedProduct);
 
@@ -208,16 +231,19 @@ public class MainFormController {
                         e.printStackTrace();
                     }
                     modifyProductStage.show();
+                    // set event for product table to update after window closes
                     modifyProductStage.setOnHidden(windowEvent -> MainProductTable.setItems(Inventory.getAllProducts()));
                 } else {
-                    Alerts.GenerateAlert("WARNING", "Modify Product Error", "You Must Select A Product To Modify", "", "Show");
+                    Alerts.GenerateAlert("WARNING", "Modify Product Error", Text.productModifySelectionError, "", "Show");
                 }
             }
         });
+        // deletes product selection after confirmation if product has no associated parts
         MainProductDelete.setOnAction(actionEvent -> {
             Product selectedProduct = MainProductTable.getSelectionModel().getSelectedItem();
 
             if (selectedProduct != null) {
+                // can't use Alerts class here due to needing to verify against user response from alert
                 Alert deleteProductWarning = new Alert(Alert.AlertType.CONFIRMATION, "Delete " + selectedProduct.getName() + "?", ButtonType.OK, ButtonType.CANCEL);
                 deleteProductWarning.showAndWait();
 
@@ -226,10 +252,11 @@ public class MainFormController {
                     // table isn't refreshing automatically after a .remove here as well
                     MainProductTable.setItems(Inventory.getAllProducts());
                 } else {
-                    Alerts.GenerateAlert("WARNING", "Delete Product Error", "You Cannot Delete A Product With Associated Parts", "", "Show");
+                    Alerts.GenerateAlert("WARNING", "Delete Product Error", Text.productDeleteError, "", "Show");
                 }
             }
         });
+        // exits the application entirely
         MainExitButton.setOnAction(event -> System.exit(0));
     }
 }

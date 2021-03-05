@@ -133,7 +133,8 @@ public class ModifyProductController {
                     ModifyProductPriceCost.getText(),
                     ModifyProductMax.getText().trim(),
                     ModifyProductMin.getText().trim(),
-                    ModifyProductAssociatedPartsTable.getItems()
+                    ModifyProductAssociatedPartsTable.getItems(),
+                    (Stage)ModifyProductCancel.getScene().getWindow()
             )) {
                 Product updatedProduct = new Product(
                         tempProductId,

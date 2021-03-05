@@ -61,12 +61,12 @@ public class ModifyPartController {
 
         if (selectedPart instanceof InHouse) {
             InHouseRadio.setSelected(true);
-            ModifyPartUniqueLabel.setText(Text.addPartMachineIDLabel);
+            ModifyPartUniqueLabel.setText(Text.partMachineIDLabel);
             ModifyPartUniqueAttribute.setText(String.valueOf(((InHouse) selectedPart).getMachineId()));
         }
         if (selectedPart instanceof Outsourced) {
             OutsourcedRadio.setSelected(true);
-            ModifyPartUniqueLabel.setText(Text.addPartCompanyNameLabel);
+            ModifyPartUniqueLabel.setText(Text.partCompanyNameLabel);
             ModifyPartUniqueAttribute.setText(((Outsourced) selectedPart).getCompanyName());
         }
         // set button events
@@ -138,8 +138,8 @@ public class ModifyPartController {
 
     @FXML
     private void setPartTypeListener() {
-        InHouseRadio.setOnAction(actionEvent -> ModifyPartUniqueLabel.setText(Text.addPartMachineIDLabel));
-        OutsourcedRadio.setOnAction(actionEvent -> ModifyPartUniqueLabel.setText(Text.addPartCompanyNameLabel));
+        InHouseRadio.setOnAction(actionEvent -> ModifyPartUniqueLabel.setText(Text.partMachineIDLabel));
+        OutsourcedRadio.setOnAction(actionEvent -> ModifyPartUniqueLabel.setText(Text.partCompanyNameLabel));
     }
 
     private void closeWindow() {

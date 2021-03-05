@@ -3,6 +3,9 @@ package Classes;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+/**
+ *
+ */
 public class Product {
     private final ObservableList<Part> associatedParts = FXCollections.observableArrayList();
 

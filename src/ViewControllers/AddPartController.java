@@ -107,8 +107,8 @@ public class AddPartController {
 
     @FXML
     private void setPartTypeListener() {
-        InHouseRadio.setOnAction(actionEvent -> AddPartUniqueLabel.setText(Text.addPartMachineIDLabel));
-        OutsourcedRadio.setOnAction(actionEvent -> AddPartUniqueLabel.setText(Text.addPartCompanyNameLabel));
+        InHouseRadio.setOnAction(actionEvent -> AddPartUniqueLabel.setText(Text.partMachineIDLabel));
+        OutsourcedRadio.setOnAction(actionEvent -> AddPartUniqueLabel.setText(Text.partCompanyNameLabel));
     }
 
     private void closeWindow() {
