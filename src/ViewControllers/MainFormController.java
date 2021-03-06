@@ -75,8 +75,6 @@ public class MainFormController {
     public static Product selectedProduct;
     public static int selectedProductIndex;
 
-    // TODO: create build for project turn-in
-
     /**
      * Initializes and sets values for parts and products tables
      */
@@ -187,7 +185,7 @@ public class MainFormController {
                 // after user confirms, delete part
                 if (deletePartWarning.getResult() == ButtonType.OK) {
                     Inventory.deletePart(selectedPart);
-                    // not sure why the table isn't refreshing automatically after a .remove is performed on the obs arr list
+                    // not sure why the table isn't refreshing automatically after a .remove is performed on the observable array list
                     // but we go ahead and set the items here again so that displayed parts are reflective of updated inventory
                     MainPartTable.setItems(Inventory.getAllParts());
                 }
