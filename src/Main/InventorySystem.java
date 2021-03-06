@@ -15,10 +15,19 @@ import java.io.IOException;
  */
 public class InventorySystem extends Application {
 
+    /**
+     * launches application
+     * @param args starting arguments for applicaiton
+     */
     public static void main(String[] args) {
         launch(args);
     }
 
+    /**
+     * Builds initial scene/stage for application
+     * @param primaryStage main form
+     * @throws IOException IOExceptions needed for several validations or attempts to access data
+     */
     @Override
     public void start(Stage primaryStage) throws IOException {
 

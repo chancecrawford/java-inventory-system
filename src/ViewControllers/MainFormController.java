@@ -98,16 +98,24 @@ public class MainFormController {
     }
 
     /**
-     * Sets action events for buttons
+     * Sets action events for buttons:
      *
      * Part/Product Search Buttons
+     *  Grab search inputs, run the inputs through multiples validation methods, then attempt to match the query
+     *  to any results in either the parts or products lists
+     *
      * Part/Product Add/Modify/Delete Buttons
+     *  Add/modify buttons set up listeners for when the new windows are closed. When the modify button is
+     *  clicked, the selected part/product is passed to the new window as well.
+     *  Delete buttons remove the selected part/product from the inventory
+     *
      * Application Exit Button
      *
      */
     private void setMainButtonEvents() {
         // check for input type (part id or name) to then search with correct method
         PartSearchButton.setOnAction(actionEvent -> {
+            // grab user search input
             String searchQuery = MainPartSearch.getText().trim();
             // check if search input is an int
             if (InputValidation.isInteger(searchQuery)) {
@@ -166,16 +174,18 @@ public class MainFormController {
         });
         // deletes part selection after confirmation
         MainPartDelete.setOnAction(actionEvent -> {
+            // retrieve selected part
             Part selectedPart = MainPartTable.getSelectionModel().getSelectedItem();
+            // ensure selection is not null
             if (selectedPart != null) {
                 // can't use Alerts class here due to needing to verify against user response from alert
                 Alert deletePartWarning = new Alert(Alert.AlertType.CONFIRMATION, "Delete " + selectedPart.getName() + "?", ButtonType.OK, ButtonType.CANCEL);
                 deletePartWarning.showAndWait();
-
+                // after user confirms, delete part
                 if (deletePartWarning.getResult() == ButtonType.OK) {
                     Inventory.deletePart(selectedPart);
-                    // not sure why the table isn't refreshing automatically after a .remove
-                    // is performed on the obs arr list
+                    // not sure why the table isn't refreshing automatically after a .remove is performed on the obs arr list
+                    // but we go ahead and set the items here again so that displayed parts are reflective of updated inventory
                     MainPartTable.setItems(Inventory.getAllParts());
                 }
             }
@@ -240,13 +250,14 @@ public class MainFormController {
         });
         // deletes product selection after confirmation if product has no associated parts
         MainProductDelete.setOnAction(actionEvent -> {
+            // retrieve selected product
             Product selectedProduct = MainProductTable.getSelectionModel().getSelectedItem();
-
+            // double check selection is not null
             if (selectedProduct != null) {
                 // can't use Alerts class here due to needing to verify against user response from alert
                 Alert deleteProductWarning = new Alert(Alert.AlertType.CONFIRMATION, "Delete " + selectedProduct.getName() + "?", ButtonType.OK, ButtonType.CANCEL);
                 deleteProductWarning.showAndWait();
-
+                // confirm there are no associated parts for the product, confirm from user, then delete product
                 if (deleteProductWarning.getResult() == ButtonType.OK && selectedProduct.getAllAssociatedParts().isEmpty()) {
                     Inventory.deleteProduct(selectedProduct);
                     // table isn't refreshing automatically after a .remove here as well

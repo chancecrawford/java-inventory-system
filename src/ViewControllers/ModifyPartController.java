@@ -15,6 +15,9 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
+/**
+ * Class for modifying existing parts in the inventory
+ */
 public class ModifyPartController {
     Stage stage;
 
@@ -49,6 +52,10 @@ public class ModifyPartController {
     // declaring part type to change based on radio button selection
     private String tempPartType;
 
+    /**
+     * Populates input fields with part information to be modified. Selects needed part type radio button and sets correct unique attribute label.
+     * Also initializes button events and listener for part type.
+     */
     @FXML
     private void initialize() {
         // populate fields with selected part info
@@ -59,6 +66,7 @@ public class ModifyPartController {
         ModifyPartMax.setText(String.valueOf(selectedPart.getMax()));
         ModifyPartMin.setText(String.valueOf(selectedPart.getMin()));
 
+        // verifies part type, selects relevant radio button, and sets unique attribute label to needed text
         if (selectedPart instanceof InHouse) {
             InHouseRadio.setSelected(true);
             ModifyPartUniqueLabel.setText(Text.partMachineIDLabel);
@@ -75,12 +83,22 @@ public class ModifyPartController {
         setPartTypeListener();
     }
 
+    /**
+     * Sets actions for modify part buttons
+     *
+     * Part save button
+     *  validates inputs before updating the existing part into inventory
+     *
+     * Part cancel button
+     *  closes window
+     */
     @FXML
     private void setModifyPartButtonEvents() {
         ModifyPartSave.setOnAction(actionEvent -> {
-            // set part input values
+            // grab part id now since it won't ever change
             int tempPartId = Integer.parseInt(ModifyPartID.getText());
 
+            // checks radio button selection for part type
             if (InHouseRadio.isSelected()) {
                 tempPartType = "InHouse";
             }
@@ -90,7 +108,7 @@ public class ModifyPartController {
             if (!InHouseRadio.isSelected() && !OutsourcedRadio.isSelected()) {
                 tempPartType = "";
             }
-            // validate inputs before saving part
+            // validate inputs before updating part
             if (InputValidation.validatePartInputs(
                     ModifyPartName.getText(),
                     ModifyPartInventory.getText(),
@@ -100,6 +118,7 @@ public class ModifyPartController {
                     ModifyPartUniqueAttribute.getText(),
                     tempPartType
             )) {
+                // switch statement to update with correct part type (InHouse or Outsourced)
                 switch (tempPartType) {
                     case "InHouse":
                         InHouse updatedInHousePart = new InHouse(
@@ -112,7 +131,7 @@ public class ModifyPartController {
                                 Integer.parseInt(ModifyPartUniqueAttribute.getText())
                         );
                         Inventory.updatePart(selectedPartIndex, updatedInHousePart);
-                        Alerts.GenerateAlert("INFORMATION", "Part Updated", "InHouse Part Updated Successfully", "", "Show");
+                        Alerts.GenerateAlert("INFORMATION", "Part Updated", Text.inhousePartUpdatedMessage, "", "Show");
                         closeWindow();
                         break;
                     case "Outsourced":
@@ -126,7 +145,7 @@ public class ModifyPartController {
                                 ModifyPartUniqueAttribute.getText()
                         );
                         Inventory.updatePart(selectedPartIndex, updatedOutsourcePart);
-                        Alerts.GenerateAlert("INFORMATION", "Part Updated", "Outsourced Part Updated Successfully", "", "Show");
+                        Alerts.GenerateAlert("INFORMATION", "Part Updated", Text.outsourcedPartUpdatedMessage, "", "Show");
                         closeWindow();
                         break;
                 }
@@ -136,12 +155,18 @@ public class ModifyPartController {
         ModifyPartCancel.setOnAction(actionEvent -> closeWindow());
     }
 
+    /**
+     * Listener to change the label for a parts unique attribute (Machine ID or Company Name)
+     */
     @FXML
     private void setPartTypeListener() {
         InHouseRadio.setOnAction(actionEvent -> ModifyPartUniqueLabel.setText(Text.partMachineIDLabel));
         OutsourcedRadio.setOnAction(actionEvent -> ModifyPartUniqueLabel.setText(Text.partCompanyNameLabel));
     }
 
+    /**
+     * Fires event on main form to refresh parts table with the updated part inventory then closes the window
+     */
     private void closeWindow() {
         // need to grab instantiated item on parent window to close
         stage = (Stage) ModifyPartCancel.getScene().getWindow();

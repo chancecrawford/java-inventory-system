@@ -10,6 +10,16 @@ public class Text {
     public static String modifyPartTitle = "Modify Part";
     public static String modifyProductTitle = "Modify Product";
 
+    // part successful save messages
+    public static String inhousePartSaveMessage = "InHouse Part Added Successfully";
+    public static String outsourcedPartSaveMessage = "Outsourced Part Added Successfully";
+    public static String inhousePartUpdatedMessage = "InHouse Part Updated Successfully";
+    public static String outsourcedPartUpdatedMessage = "Outsourced Part Updated Successfully";
+
+    // product successful save messages
+    public static String productSaveMessage = "Product Added Successfully";
+    public static String productUpdatedMessage = "Product Updated Successfully";
+
     // part error messages
     public static String partSearchError = "Unable to locate part with that ID or name";
     public static String partModifySelectionError = "You Must Select A Part To Modify";
@@ -24,6 +34,7 @@ public class Text {
     public static String partMachineIdError = "Entry for part machine ID is missing or invalid";
     public static String partCompanyNameError = "Entry for part company name is missing or invalid";
     public static String partTypeSelectionError = "No part type selection has been made";
+
     // product error messages
     public static String productSearchError = "Unable to locate product with that ID or name";
     public static String productModifySelectionError = "You Must Select A Part To Modify";

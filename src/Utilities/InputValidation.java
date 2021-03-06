@@ -89,7 +89,7 @@ public class InputValidation {
         if (!checkInputField(min) || !isInteger(min)) {
             inputErrors.append(Text.partMinError).append("\n");
         }
-        // ensures part minimum isn't less than 0
+        // ensures part minimum isn't less than zero
         if (!min.isEmpty() && isInteger(min)) {
             if (Integer.parseInt(min) < 0) {
                 inputErrors.append(Text.partMinAmountError).append("\n");
@@ -132,38 +132,46 @@ public class InputValidation {
      * @return boolean
      */
     public static boolean validateProductInputs(String name, String inventory, String priceCost, String max, String min, ObservableList<Part> productParts, javafx.stage.Stage currentStage) {
+        // use string builder to add all validation errors to push into one alert
         StringBuilder inputErrors = new StringBuilder();
 
+        // validates name
         if (!checkInputField(name)) {
             inputErrors.append(Text.productNameError).append("\n");
         }
+        // validates inventory level
         if (!checkInputField(String.valueOf(inventory)) || !isInteger(inventory)) {
             inputErrors.append(Text.productInventoryError).append("\n");
         }
+        // verifies inventory level is within min/max range
         if (!inventory.isEmpty() && !max.isEmpty() && !min.isEmpty() && isInteger(inventory) && isInteger(max) && isInteger(min)) {
             if (Integer.parseInt(inventory) > Integer.parseInt(max) || Integer.parseInt(inventory) < Integer.parseInt(min)) {
                 inputErrors.append(Text.productInventoryAmountError).append("\n");
             }
         }
+        // validates price/cost
         if (!checkInputField(priceCost) || !isDouble(priceCost)) {
             inputErrors.append(Text.productPriceCostError).append("\n");
         }
-
+        // validates inventory maximum
         if (!checkInputField(max) || !isInteger(max)) {
             inputErrors.append(Text.productMaxError).append("\n");
         }
+        // validates inventory minimum
         if (!checkInputField(min) || !isInteger(min)) {
             inputErrors.append(Text.productMinError).append("\n");
         }
+        // ensures minimum is not less than zero
         if (!min.isEmpty() && isInteger(min)) {
             if (Integer.parseInt(min) < 0) {
                 inputErrors.append(Text.productMinAmountError).append("\n");
             }
         }
+        // ensures associated parts isn't empty if adding a new product
         if (productParts.isEmpty() && currentStage.getTitle().equals(Text.addProductTitle)) {
             inputErrors.append(Text.productAssociatedPartsError).append("\n");
         }
-
+        // generates alert and populates it with error messages if inputErrors string builder isn't empty
         if (inputErrors.length() > 0 || !inputErrors.toString().equals("")) {
             Alerts.GenerateAlert("WARNING", "Product Entry Warning", "Required Fields Empty or Invalid", inputErrors.toString(), "ShowAndWait");
             return false;
