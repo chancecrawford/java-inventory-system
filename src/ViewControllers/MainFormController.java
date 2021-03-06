@@ -20,6 +20,9 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+/**
+ * Class for loading main form for user to view parts/products and navigate to views to add/modify/delete parts and products
+ */
 public class MainFormController {
     // Parts table
     @FXML
